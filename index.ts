@@ -8,7 +8,6 @@ const options: cors.CorsOptions = {
 }
 app.use(cors)
 //add json middleware  
-const port = 3000;
 // create graphql schema
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
 import { createHandler } from "graphql-http";
