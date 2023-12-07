@@ -1,36 +1,27 @@
 import express, {Express,Request,Response} from 'express'
+const app :  Express = express() /* use route */
+import http from "http";
+import path from "path";
+import { Server, } from "socket.io";
 
-const app :  Express = express() // why
-//TODO implement graphql and cors
-//import cors from 'cors'
-//add allowed origin to cors
+const server = http.createServer(app);
 
-//app.use(cors)
-//add json middleware  
-// create graphql schema
-/* import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
-import { createHandler } from "graphql-http";
-
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: "Query",
-    fields: {
-      hello: {
-        type: GraphQLString, 
-        resolve: () =>    "heeeello",
-      },
-    },
-  }),
-}); */
-//create graphql entry point
-//app.all("/graphql", createHandler({ schema }));
-
-app.get("/", (req: Request, res: Response) => {
-  console.log('hello wordsdfsfwsefrswefr');
-  res.send('Hello World!');
+const io = new Server(server);
+app.get("/", (req: Request, res:Response) => {
+  res.sendFile(path.join(__dirname,"../index.html"));
 });
 
-app.listen({ port: 4000 },()=>{
-  console.log("Server started on port 4000");
-  
+io.on("connection", (socket) => {
+  console.log("user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
+});
+
+server.listen(3000, () => {
+  console.log("listenig to port 3000");
 });
