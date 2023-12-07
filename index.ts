@@ -1,15 +1,14 @@
 import express, {Express,Request,Response} from 'express'
-import cors from 'cors'
+
 const app :  Express = express() // why
+//TODO implement graphql and cors
+//import cors from 'cors'
 //add allowed origin to cors
-const allowedOrigins = ['http://localhost4000']
-const options: cors.CorsOptions = {
-  origin: allowedOrigins
-}
-app.use(cors)
+
+//app.use(cors)
 //add json middleware  
 // create graphql schema
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
+/* import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
 import { createHandler } from "graphql-http";
 
 const schema = new GraphQLSchema({
@@ -22,13 +21,16 @@ const schema = new GraphQLSchema({
       },
     },
   }),
-});
+}); */
 //create graphql entry point
-app.all("/graphql", createHandler({ schema }));
+//app.all("/graphql", createHandler({ schema }));
 
 app.get("/", (req: Request, res: Response) => {
+  console.log('hello word');
   res.send('Hello World!');
 });
 
-app.listen({ port: 4000 });
-console.log('Listening to port 4000');
+app.listen({ port: 4000 },()=>{
+  console.log("Server started on port 4000");
+  
+});
