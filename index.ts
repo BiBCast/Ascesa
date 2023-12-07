@@ -18,8 +18,8 @@ const schema = new GraphQLSchema({
     name: "Query",
     fields: {
       hello: {
-        type: GraphQLString,
-        resolve: () => "hello",
+        type: GraphQLString, 
+        resolve: () =>    "heeeello",
       },
     },
   }),
