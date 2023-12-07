@@ -26,7 +26,7 @@ const schema = new GraphQLSchema({
 //app.all("/graphql", createHandler({ schema }));
 
 app.get("/", (req: Request, res: Response) => {
-  console.log('hello wordsdfsf');
+  console.log('hello wordsdfsfwsefrswefr');
   res.send('Hello World!');
 });
 
