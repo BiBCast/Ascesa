@@ -28,7 +28,7 @@ const schema = new GraphQLSchema({
 //create graphql entry point
 //app.all("/graphql", createHandler({ schema }));
 app.get("/", (req, res) => {
-    console.log('hello word');
+    console.log('hello wordsdfsf');
     res.send('Hello World!');
 });
 app.listen({ port: 4000 }, () => {
