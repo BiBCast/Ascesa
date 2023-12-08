@@ -1,51 +1,33 @@
-import express, {Express,Request,Response} from 'express'
-const app :  Express = express() /* use route */
+import express, { Express, Request, Response } from "express";
+const app: Express = express(); /* use route */
 import http from "http";
 import path from "path";
-import { Server, } from "socket.io";
+import { Server } from "socket.io";
+import { createHandler } from "graphql-http/lib/use/express";
+import express_play from "graphql-playground-middleware-express";
 
-import { graphqlHTTP } from "express-graphql"
-import { buildSchema } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
 
 // Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Query {
-    quoteOfTheDay: String
-    random: Float!
-    rollThreeDice: [Int]
-  }
-`);
-
-// The root provides a resolver function for each API endpoint
-const root = {
-  quoteOfTheDay: () => {
-    return Math.random() < 0.5 ? "Take it easy" : "Salvation lies within";
-  },
-  random: () => {
-    return Math.random();
-  },
-  rollThreeDice: () => {
-    return [1, 2, 3].map((_) => 1 + Math.floor(Math.random() * 6));
-  },
-};
-
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
-
-
+const schema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: "Query",
+    fields: {
+      hello: {
+        type: GraphQLString,
+        resolve: () => "world",
+      },
+    },
+  }),
+});
 
 const server = http.createServer(app);
 
 const io = new Server(server);
-app.get("/", (req: Request, res:Response) => {
-  
-  res.sendFile(path.join(__dirname,"../chat.html"));
+app.all("/graphql", createHandler({ schema }));
+app.get("/playground", express_play({ endpoint: "/graphql" }));
+app.get("/", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../chat.html"));
 });
 
 io.on("connection", (socket) => {
