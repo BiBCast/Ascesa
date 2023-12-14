@@ -5,7 +5,7 @@ import path from "path";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
-import express_play from "graphql-playground-middleware-express";
+import expressPlay from "graphql-playground-middleware-express";
 
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
@@ -57,7 +57,7 @@ const io = new Server(server);
 
 //api route 
 app.all("/graphql", createHandler({ schema }));
-app.get("/playground", express_play({ endpoint: "/graphql" }));
+app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 
 // home route 
 app.get("/", (req: Request, res: Response) => {
@@ -73,10 +73,18 @@ io.on("connection", (socket) => {
   });
 // user;message
   socket.on("chat message", (msg:string) => {
+    //TODO maybe use objects
     const user = msg.split(";")[0]
     const message = msg.split(";")[1]
-    if (user === "") console.error("User null")
+    if (user.trim() === "") {
+      console.error("User null")
+      return true
+    }
     else console.log("User "+user+" is writing");
+    if (message.trim() === "") {
+      console.error("null message")
+      return true
+    }
     //i have to pass also the user in the future
     io.emit("chat message", message); 
   });
