@@ -6,90 +6,68 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
 import expressPlay from "graphql-playground-middleware-express";
+import { schemaUser } from "./chat";
+import { schema } from "./graphql";
+//setup mongoose
+mongoose.connect(
+  "mongodb+srv://admin:admin@castdb.ju6ktqj.mongodb.net/?retryWrites=true&w=majority"
+);
+const db = mongoose.connection;
 
-
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
-//TODO Pass the user
-//setup mongoose 
-mongoose.connect("mongodb+srv://admin:admin@castdb.ju6ktqj.mongodb.net/?retryWrites=true&w=majority")
-const db = mongoose.connection
-db.on("error",(error)=>{
-  console.log(error);
-})
-db.on("open",()=>{
-  console.log("connected to database");
-  
-})
-app.use(express.json())
-
-import { schemaUser } from './chat';
-
-
-app.get("/create", async(req: Request, res: Response) => {
-  try{
-    const user = await schemaUser.create({
-    author: "prova",
-    message: "messaggio"
-  })
-  res.status(200).json(user)
-  }
-  catch(error:unknown){
-    res.status(500).json({Message:(error as Error).message})
-
-  }
-});
-//make express accept json
-// Construct a schema, using GraphQL schema language
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: "Query",
-    fields: {
-      hello: {
-        type: GraphQLString,
-        resolve: () => "world",
-      },
-    },
-  }),
-});
-
+app.use(express.json());
 const server = http.createServer(app);
 const io = new Server(server);
-
-//api route 
+//ROUTES graphql
 app.all("/graphql", createHandler({ schema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
+////ROUTES
+app.get("/create", async (req: Request, res: Response) => {
+  try {
+    const user = await schemaUser.create({
+      author: "prova",
+      message: "messaggio",
+    });
+    res.status(200).json(user);
+  } catch (error: unknown) {
+    res.status(500).json({ Message: (error as Error).message });
+  }
+});
 
-// home route 
 app.get("/", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../chat.html"));
 });
 
-
-//comunication with client for instant message
+//comunication client/server  for instant message
 io.on("connection", (socket) => {
   console.log("user connected");
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
-// user;message
-  socket.on("chat message", (msg:string) => {
-    //TODO maybe use objects
-    const user = msg.split(";")[0]
-    const message = msg.split(";")[1]
+  // user;message
+  socket.on("chat message", (msg: string) => {
+    //TODOmaybe use objects
+    const user = msg.split(";")[0];
+    const message = msg.split(";")[1];
     if (user.trim() === "") {
-      console.error("User null")
-      return true
-    }
-    else console.log("User "+user+" is writing");
+      console.error("User null");
+      return true;
+    } else console.log("User " + user + " is writing");
     if (message.trim() === "") {
-      console.error("null message")
-      return true
+      console.error("null message");
+      return true;
     }
     //i have to pass also the user in the future
-    io.emit("chat message", message); 
+    io.emit("chat message", message);
   });
 });
-//start server
-server.listen(3000, () => {
-  console.log("listenig to port 3000");
+//start db and server
+db.on("error", (error) => {
+  console.log(error);
+});
+db.on("open", () => {
+  console.log("connected to database");
+  //start server
+  server.listen(3000, () => {
+    console.log("listenig to port 3000");
+  });
 });
