@@ -25,7 +25,7 @@ app.get("/create", async (req: Request, res: Response) => {
   try {
     const user = await schemaUser.create({
       author: "prova",
-      message: "messaggio ",
+      message: "messaggio",
     });
     res.status(200).json(user);
   } catch (error: unknown) {
