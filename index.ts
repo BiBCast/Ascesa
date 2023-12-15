@@ -6,8 +6,8 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
 import expressPlay from "graphql-playground-middleware-express";
-import { schemaUser } from "./chat";
-import { schema } from "./graphql";
+import { schemaUser } from "./schemaChat";
+import { ChatSchema } from "./graphql";
 //setup mongoose
 mongoose.connect(
   "mongodb+srv://admin:admin@castdb.ju6ktqj.mongodb.net/?retryWrites=true&w=majority"
@@ -18,7 +18,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server(server);
 //ROUTES graphql
-app.all("/graphql", createHandler({ schema }));
+app.all("/graphql", createHandler({ schema: ChatSchema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 ////ROUTES
 app.get("/create", async (req: Request, res: Response) => {
