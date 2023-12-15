@@ -24,6 +24,7 @@ app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 app.get("/create", async (req: Request, res: Response) => {
   try {
     const user = await schemaUser.create({
+      //TODO crud with database
       author: "prova",
       message: "messaggio",
     });

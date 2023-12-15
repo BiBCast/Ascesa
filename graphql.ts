@@ -6,24 +6,26 @@ import {
 } from "graphql";
 // Construct a schema, using GraphQL schema language
 //TODO endpoint graphql
-//crud , get all
+//get all, get by id, 
 // schema
-const ChatType = new GraphQLObjectType({
+const UserType = new GraphQLObjectType({
   name: "Query",
   fields: () => ({
     id: { type: GraphQLID },
-    user: { type: GraphQLString },
+    name: { type: GraphQLString },
     message: { type: GraphQLString },
   }),
 });
-//schema and parameter have to match
+//the json args must have the key of the schema
 const RootQuery = new GraphQLObjectType({
   name: "RootqueryType",
   fields: {
-    client: {
-      type: ChatType,
-      args: { id: { type: GraphQLID }, user: { type: GraphQLString } },
+    user: {
+      type: UserType,
+      args: { id: { type: GraphQLID }},
       resolve(parent, args) {
+        //return a json {arg:value,...} and filter about the parameter of the json
+        //TODO filter by id   
         return args;
       },
     },
