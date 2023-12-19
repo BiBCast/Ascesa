@@ -5,7 +5,7 @@ import {
   GraphQLID,
 } from "graphql";
 // Construct a schema, using GraphQL schema language
-//get all, get by id, 
+//get all, get by id,
 // schema
 const UserType = new GraphQLObjectType({
   name: "Query",
@@ -19,12 +19,22 @@ const UserType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
   name: "RootqueryType",
   fields: {
-    user: {
+    Users: {
       type: UserType,
-      args: { id: { type: GraphQLID }},
+      args: {},
       resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
-        //TODO filter by id   
+        //TODO filter by id
+
+        return args;
+      },
+    },
+    user: {
+      type: UserType,
+      args: { id: { type: GraphQLID }! },
+      resolve(parent, args) {
+        //return a json {arg:value,...} and filter about the parameter of the json
+        //TODO filter by id
         return args;
       },
     },
