@@ -5,7 +5,6 @@ import {
   GraphQLID,
 } from "graphql";
 // Construct a schema, using GraphQL schema language
-//TODO endpoint graphql
 //get all, get by id, 
 // schema
 const UserType = new GraphQLObjectType({

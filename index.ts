@@ -21,10 +21,10 @@ const io = new Server(server);
 app.all("/graphql", createHandler({ schema: ChatSchema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 ////ROUTES
-app.get("/create", async (req: Request, res: Response) => {
+/* app.get("/create", async (req: Request, res: Response) => {
   try {
     const user = await schemaUser.create({
-      //TODO crud with database
+      //FIXME example create with database
       author: "prova",
       message: "messaggio",
     });
@@ -32,8 +32,8 @@ app.get("/create", async (req: Request, res: Response) => {
   } catch (error: unknown) {
     res.status(500).json({ Message: (error as Error).message });
   }
-});
-
+}); */
+// TODO replace with react
 app.get("/", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../chat.html"));
 });
@@ -45,19 +45,25 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
   // user;message
-  socket.on("chat message", (msg: string) => {
+  socket.on("chat message", async (msg: string) => {
     //TODOmaybe use objects
     const user = msg.split(";")[0];
     const message = msg.split(";")[1];
     if (user.trim() === "") {
       console.error("User null");
       return true;
-    } else console.log("User " + user + " is writing");
+    }
     if (message.trim() === "") {
       console.error("null message");
       return true;
     }
+
     //i have to pass also the user in the future
+    await schemaUser.create({
+      //FIXME example create with database
+      author: user,
+      message: message,
+    });
     io.emit("chat message", message);
   });
 });
