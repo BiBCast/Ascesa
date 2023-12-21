@@ -1,7 +1,6 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 const app: Express = express(); /* use route */
 import http from "http";
-import path from "path";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
@@ -24,7 +23,7 @@ app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 /* app.get("/create", async (req: Request, res: Response) => {
   try {
     const user = await schemaUser.create({
-      //FIXME example create with database
+      // example create with database
       user: "prova2",
       message: "messaggio2",
     });
@@ -33,10 +32,10 @@ app.get("/playground", expressPlay({ endpoint: "/graphql" }));
     res.status(500).json({ Message: (error as Error).message });
   }
 }); */
-// TODO replace with react
-app.get("/", (req: Request, res: Response) => {
+//  replaced with react port 5173
+/* app.get("/", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../chat.html"));
-});
+}); */
 
 //comunication client/server  for instant message
 io.on("connection", (socket) => {
