@@ -21,7 +21,7 @@ const io = new Server(server);
 app.all("/graphql", createHandler({ schema: ChatSchema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 ////ROUTES
-app.get("/create", async (req: Request, res: Response) => {
+/* app.get("/create", async (req: Request, res: Response) => {
   try {
     const user = await schemaUser.create({
       //FIXME example create with database
@@ -32,7 +32,7 @@ app.get("/create", async (req: Request, res: Response) => {
   } catch (error: unknown) {
     res.status(500).json({ Message: (error as Error).message });
   }
-});
+}); */
 // TODO replace with react
 app.get("/", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../chat.html"));
