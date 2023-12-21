@@ -1,7 +1,11 @@
 import { ReactNode } from "react";
 
 export function Chat({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <section>{children}</section>
+    </>
+  );
 }
 
 //structure components

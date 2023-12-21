@@ -7,6 +7,7 @@ import { createHandler } from "graphql-http/lib/use/express";
 import expressPlay from "graphql-playground-middleware-express";
 import { schemaUser } from "./schemaChat";
 import { ChatSchema } from "./graphql";
+import cors from "cors";
 //setup mongoose
 mongoose.connect(
   "mongodb+srv://admin:admin@castdb.ju6ktqj.mongodb.net/?retryWrites=true&w=majority"
@@ -14,6 +15,7 @@ mongoose.connect(
 const db = mongoose.connection;
 
 app.use(express.json());
+app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server);
 //ROUTES graphql
