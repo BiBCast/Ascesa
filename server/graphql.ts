@@ -26,7 +26,6 @@ const RootQuery = new GraphQLObjectType({
       args: {},
       async resolve() {
         //return a json {arg:value,...} and filter about the parameter of the json
-        //TODO filter by id
         const users = await schemaUser.find({});
         return users;
       },
@@ -36,7 +35,6 @@ const RootQuery = new GraphQLObjectType({
       args: { user: { type: GraphQLString } },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
-        //TODO filter by id
         const user = await schemaUser.findOne({ user: args["user"] });
         return user;
       },

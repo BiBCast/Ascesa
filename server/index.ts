@@ -59,7 +59,6 @@ io.on("connection", (socket) => {
 
     //i have to pass also the user in the future
     await schemaUser.create({
-      //FIXME example create with database
       user: user,
       message: message,
     });

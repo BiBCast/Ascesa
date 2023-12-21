@@ -1,12 +1,12 @@
-import './App.css'
+import "./App.css";
+import { Chat } from "./components/Chat/Chat";
 
 function App() {
-
   return (
     <>
-      <div>prova</div>
+      <Chat />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
