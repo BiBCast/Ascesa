@@ -1,14 +1,7 @@
-import InputBar from "../Messages/InputBar/InputBar";
-import Messages from "../Messages/Messages";
+import { ReactNode } from "react";
 
-export function Chat() {
-  return (
-    <>
-      <Messages>
-        <InputBar />
-      </Messages>
-    </>
-  );
+export function Chat({ children }: { children: ReactNode }) {
+  return <>{children}</>;
 }
 
 //structure components
