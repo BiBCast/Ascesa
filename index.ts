@@ -21,18 +21,18 @@ const io = new Server(server);
 app.all("/graphql", createHandler({ schema: ChatSchema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 ////ROUTES
-/* app.get("/create", async (req: Request, res: Response) => {
+app.get("/create", async (req: Request, res: Response) => {
   try {
     const user = await schemaUser.create({
       //FIXME example create with database
-      author: "prova",
-      message: "messaggio",
+      user: "prova2",
+      message: "messaggio2",
     });
     res.status(200).json(user);
   } catch (error: unknown) {
     res.status(500).json({ Message: (error as Error).message });
   }
-}); */
+});
 // TODO replace with react
 app.get("/", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../chat.html"));
@@ -61,7 +61,7 @@ io.on("connection", (socket) => {
     //i have to pass also the user in the future
     await schemaUser.create({
       //FIXME example create with database
-      author: user,
+      user: user,
       message: message,
     });
     io.emit("chat message", message);

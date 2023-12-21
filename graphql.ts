@@ -3,7 +3,9 @@ import {
   GraphQLObjectType,
   GraphQLString,
   GraphQLID,
+  GraphQLList,
 } from "graphql";
+import { schemaUser } from "./schemaChat";
 // Construct a schema, using GraphQL schema language
 //get all, get by id,
 // schema
@@ -11,7 +13,7 @@ const UserType = new GraphQLObjectType({
   name: "Query",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLString },
+    user: { type: GraphQLString },
     message: { type: GraphQLString },
   }),
 });
@@ -20,22 +22,23 @@ const RootQuery = new GraphQLObjectType({
   name: "RootqueryType",
   fields: {
     Users: {
-      type: UserType,
+      type: new GraphQLList(UserType),
       args: {},
-      resolve(parent, args) {
+      async resolve() {
         //return a json {arg:value,...} and filter about the parameter of the json
         //TODO filter by id
-
-        return args;
+        const users = await schemaUser.find({});
+        return users;
       },
     },
-    user: {
+    User: {
       type: UserType,
-      args: { id: { type: GraphQLID }! },
-      resolve(parent, args) {
+      args: { user: { type: GraphQLString } },
+      async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
         //TODO filter by id
-        return args;
+        const user = await schemaUser.findOne({ user: args["user"] });
+        return user;
       },
     },
   },
