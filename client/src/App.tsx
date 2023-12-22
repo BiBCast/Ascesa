@@ -25,23 +25,30 @@ type ChatUser = {
 function App() {
   const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
   //fetch data from api
-  const { data, isLoading, error } = useQuery("launches", async () => {
-    const response = await axios({
-      url: endpoint,
-      method: "POST",
-      data: {
-        query: FETCHALLQUERY,
-      },
-    });
+  const {
+    data,
+    isLoading,
+    error,
+  }: { data: ChatUser[]; isLoading: Boolean; error: unknown } = useQuery(
+    "launches",
+    async () => {
+      const response = await axios({
+        url: endpoint,
+        method: "POST",
+        data: {
+          query: FETCHALLQUERY,
+        },
+      });
 
-    return response.data.data.Users; // Assuming the data structure is like { data: { Users: [...] } }
-  });
+      return response.data.data.Users; // Assuming the data structure is like { data: { Users: [...] } }
+    }
+  );
 
   useEffect(() => {
     setChatUsers(data);
     console.log("refresh");
     console.log(data);
-  }, [data]);
+  }, [JSON.stringify(data)]);
   //data is an array
 
   return (
