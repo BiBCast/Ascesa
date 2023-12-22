@@ -1,4 +1,4 @@
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 const app: Express = express(); /* use route */
 import http from "http";
 import mongoose from "mongoose";
