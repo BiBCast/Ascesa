@@ -6,7 +6,7 @@ import Messages from "./components/Messages/Messages";
 
 import axios from "axios";
 import { useQuery } from "react-query";
-
+// TODO  use apollo client
 const endpoint = "http://localhost:3000/graphql/";
 const FETCHALLQUERY = `
   {
@@ -24,6 +24,7 @@ type ChatUser = {
 
 function App() {
   const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
+  //fetch data from api
   const { data, isLoading, error } = useQuery("launches", async () => {
     const response = await axios({
       url: endpoint,
@@ -46,13 +47,19 @@ function App() {
   return (
     <>
       {isLoading && "Loading..."}
+      {/* FIXME Display error */}
       {error && <pre>{error.message}</pre>}
       <ul>
         {ChatUsers?.map((user: ChatUser, index: number) => (
-          <li key={index}>{user.message}</li>
+          <li key={index}>
+            <div>{user.user}</div>
+            <div>{user.message}</div>
+          </li>
         ))}
       </ul>
+      {/* TODO ???we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
       <Chat>
+        {/* TODO pass all messages and user to the Messages component  */}
         <Messages>
           <InputBar />
         </Messages>
