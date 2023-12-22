@@ -48,6 +48,7 @@ function App() {
     setChatUsers(data);
     console.log("refresh");
     console.log(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data)]);
   //data is an array
 
