@@ -46,24 +46,27 @@ function App() {
 
   return (
     <>
-      {isLoading && "Loading..."}
-      {/* FIXME Display error */}
-      {error && <pre>{error.message}</pre>}
-      <ul>
-        {ChatUsers?.map((user: ChatUser, index: number) => (
-          <li key={index}>
-            <div>{user.user}</div>
-            <div>{user.message}</div>
-          </li>
-        ))}
-      </ul>
-      {/* TODO ???we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
-      <Chat>
-        {/* TODO pass all messages and user to the Messages component  */}
-        <Messages>
-          <InputBar />
-        </Messages>
-      </Chat>
+      <div className="Channels">
+        {isLoading && "Loading..."}
+        {/* FIXME Display error */}
+        {error && <pre>{error.message}</pre>}
+        <ul>
+          {ChatUsers?.map((user: ChatUser, index: number) => (
+            <li key={index}>
+              <div>{user.user}</div>
+              <div>{user.message}</div>
+            </li>
+          ))}
+        </ul>
+        {/* TODO XXX we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
+        {/* 2 possibility : YYY channels and chat are on the same level and , we do the fetch of the channels/ChatUserMessage  at the same level, we detect what channel is selected and pass the event to the same level of teh other before mentioned   */}
+        <Chat>
+          {/* TODO pass all messages and user to the Messages component  */}
+          <Messages>
+            <InputBar />
+          </Messages>
+        </Chat>
+      </div>
     </>
   );
 }

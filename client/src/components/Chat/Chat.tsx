@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 export function Chat({ children }: { children: ReactNode }) {
   return (
     <>
-      <section>{children}</section>
+      <section className="Chat">{children}</section>
     </>
   );
 }
