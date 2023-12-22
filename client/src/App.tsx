@@ -29,7 +29,7 @@ function App() {
     data,
     isLoading,
     error,
-  }: { data: ChatUser[]; isLoading: Boolean; error: unknown } = useQuery(
+  }: { data: ChatUser[]; isLoading: boolean; error: unknown } = useQuery(
     "launches",
     async () => {
       const response = await axios({
