@@ -1,0 +1,12 @@
+.Inputbar {
+  display: flex;
+  background-color: gray;
+  align-items: center;
+  justify-content: space-around;
+  position: sticky;
+  bottom: 0;
+  padding-block: 1%;
+  & > input {
+    font-size: calc(var(--text-size) - 0.3em);
+  }
+}
