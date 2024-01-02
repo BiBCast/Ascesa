@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-
+import "./index.css";
 export function Chat({ children }: { children: ReactNode }) {
   return (
     <>

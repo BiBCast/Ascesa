@@ -68,6 +68,7 @@ function App() {
         </ul>
         {/* TODO XXX we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
         {/* 2 possibility : YYY channels and chat are on the same level and , we do the fetch of the channels/ChatUserMessage  at the same level, we detect what channel is selected and pass the event to the same level of teh other before mentioned   */}
+        {/* we can pass a function to detect the selected channel created in the level of the  channels*/}
         <Chat>
           {/* TODO pass all messages and user to the Messages component  */}
           <Messages>
