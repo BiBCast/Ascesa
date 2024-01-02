@@ -1,12 +1,18 @@
-import { ReactNode } from "react";
+import { ChatUser } from "../../App";
 import "./index.css";
-export default function Messages({ children }: { children: ReactNode }) {
+import InputBar from "./InputBar/InputBar";
+export default function Messages({ ChatUsers }: { ChatUsers: ChatUser[] }) {
   return (
     <>
       <div className="Messages">
-        <p>text</p>
+        {ChatUsers?.map((user: ChatUser, index: number) => (
+          <ul key={index}>
+            <li>User: {user.user}</li>
+            <li>Message: {user.message}</li>
+          </ul>
+        ))}
       </div>
-      {children}
+      <InputBar />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 const app: Express = express(); /* use route */
 import http from "http";
 import mongoose from "mongoose";
@@ -17,7 +17,12 @@ const db = mongoose.connection;
 app.use(express.json());
 app.use(cors());
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
 //ROUTES graphql
 app.all("/graphql", createHandler({ schema: ChatSchema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
