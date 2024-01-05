@@ -1,4 +1,4 @@
-import { Dispatch, KeyboardEvent, useState } from "react";
+import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
 import "./index.css";
 import { io } from "socket.io-client";
 import { ChatUser } from "../../App";
@@ -6,17 +6,19 @@ const socket = io("http://localhost:3000/");
 export default function InputBar({
   setChatUsers,
 }: {
-  setChatUsers: Dispatch<ChatUser[]>;
+  setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
 }) {
   const [input, setInput] = useState("");
   function handleInput(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       if (input === "") return;
-      console.log(input);
       //TODO implement user
-      setChatUsers((prev: ChatUser[]) => {
-        [...prev, { user: "pietro", message: input } as ChatUser];
+      setChatUsers((prev) => {
+        console.log(prev);
+
+        return [...prev, { user: "pietro", message: input }];
       });
+
       socket.emit("chat message", "pietro;" + input);
     }
   }

@@ -1,9 +1,19 @@
-import { ReactNode } from "react";
+import { Dispatch, SetStateAction } from "react";
 import "./index.css";
-export function Chat({ children }: { children: ReactNode }) {
+import Messages from "../Messages/Messages";
+import { ChatUser } from "../../App";
+export function Chat({
+  ChatUser,
+  setChatUsers,
+}: {
+  ChatUser: ChatUser[];
+  setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
+}) {
   return (
     <>
-      <section className="Chat">{children}</section>
+      <section className="Chat">
+        <Messages ChatUser={ChatUser} setChatUsers={setChatUsers} />
+      </section>
     </>
   );
 }

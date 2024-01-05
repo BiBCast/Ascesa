@@ -1,6 +1,6 @@
-.Messages {
+.container {
   background-color: #313338;
-  height: 100%;
+  flex-grow: 1;
   color: rgb(242, 243, 245);
   display: flex;
   align-items: flex-end;
@@ -8,10 +8,7 @@
   overflow: scroll;
   scroll-behavior: smooth;
   overflow-y: hidden;
-  & > p {
-    width: 100%;
-  }
-  & > ul {
+  & > div {
     width: 100%;
   }
 }
