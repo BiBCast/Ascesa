@@ -1,6 +1,6 @@
 .Inputbar {
   display: flex;
-  background-color: gray;
+  background-color: lightblue;
   align-items: center;
   justify-content: space-around;
   position: sticky;
@@ -8,5 +8,7 @@
   padding-block: 1%;
   & > input {
     font-size: calc(var(--text-size) - 0.3em);
+    width: 30%;
+    text-overflow: clip;
   }
 }

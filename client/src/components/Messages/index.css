@@ -1,14 +1,32 @@
 .container {
-  background-color: #313338;
+  background-color: white;
   flex-grow: 1;
-  color: rgb(242, 243, 245);
+  color: black;
   display: flex;
-  align-items: flex-end;
   flex-direction: column;
   overflow: scroll;
   scroll-behavior: smooth;
   overflow-y: hidden;
-  & > div {
-    width: 100%;
+  gap: 2%;
+  & .chatbox {
+    display: flex;
+    flex-direction: column;
+    & > .baloon {
+      padding-inline: 1%;
+      width: fit-content;
+      border-radius: 10px;
+      max-width: 80%;
+      -moz-box-shadow: 0 0 3px #2c61b1;
+      -webkit-box-shadow: 0 0 3px #2c61b1;
+      box-shadow: 0 0 3px #2c61b1;
+      & .user {
+        color: #0f7fca;
+      }
+      & .message {
+        word-wrap: break-word;
+      }
+    }
+
+    /* align-items: flex-end; to move to the right */
   }
 }

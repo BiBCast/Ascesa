@@ -15,11 +15,13 @@ export default function Messages({
         {ChatUser?.map((user: ChatUser, index: number) => (
           <>
             <div className="chatbox" key={index}>
-              <div>
-                <p className="user">{user.user}</p>
-              </div>
-              <div>
-                <p>{user.message}</p>
+              <div className="baloon">
+                <div>
+                  <p className="user">{user.user}</p>
+                </div>
+                <div>
+                  <p className="message">{user.message}</p>
+                </div>
               </div>
             </div>
           </>

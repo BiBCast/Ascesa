@@ -32,6 +32,7 @@ export default function InputBar({
         placeholder="Canale"
         onKeyDown={handleInput}
       />
+
       <div>invia</div>
     </div>
   );
