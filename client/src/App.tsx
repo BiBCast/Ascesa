@@ -43,12 +43,13 @@ function App() {
 
   useEffect(() => {
     //FIXME test data
-    setChatUsers([
+    setChatUsers(data);
+    /*  setChatUsers([
       { user: "pietro", message: "test" },
       { user: "pietro", message: "test" },
-    ]);
-    console.log("refresh");
-    console.log(data);
+    ]); */
+    /*  console.log("refresh");
+    console.log(data); */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data)]);
   // maybe []?
