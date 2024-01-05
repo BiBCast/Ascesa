@@ -1,7 +1,13 @@
-import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useState,
+} from "react";
 import "./index.css";
 import { io } from "socket.io-client";
 import { ChatUser } from "../../App";
+import SendImg from "./../../../public/assets/send-button.png";
 const socket = io("http://localhost:3000/");
 export default function InputBar({
   setChatUsers,
@@ -9,6 +15,7 @@ export default function InputBar({
   setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
 }) {
   const [input, setInput] = useState("");
+
   function handleInput(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       if (input === "") return;
@@ -20,7 +27,20 @@ export default function InputBar({
       });
 
       socket.emit("chat message", "pietro;" + input);
+      setInput("");
     }
+  }
+  function handleInputSendbutton() {
+    if (input === "") return;
+    //TODO implement user
+    setChatUsers((prev) => {
+      console.log(prev);
+
+      return [...prev, { user: "pietro", message: input }];
+    });
+
+    socket.emit("chat message", "pietro;" + input);
+    setInput("");
   }
 
   return (
@@ -33,7 +53,9 @@ export default function InputBar({
         onKeyDown={handleInput}
       />
 
-      <div>invia</div>
+      <div className="send">
+        <img src={SendImg} alt="fireSpot" onClick={handleInputSendbutton} />
+      </div>
     </div>
   );
 }

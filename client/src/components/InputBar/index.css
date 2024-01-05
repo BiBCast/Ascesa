@@ -11,4 +11,10 @@
     width: 30%;
     text-overflow: clip;
   }
+  & > .send > img {
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
