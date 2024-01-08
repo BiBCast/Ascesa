@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { ChatUser } from "../pages/Home/Home";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
@@ -9,6 +9,13 @@ export default function Messages({
   ChatUser: ChatUser[];
   setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
 }) {
+  const bottomEl = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    bottomEl?.current?.scrollIntoView();
+  };
+
+  useEffect(scrollToBottom, [ChatUser.length]);
   return (
     <>
       <div className="container">
@@ -26,6 +33,7 @@ export default function Messages({
             </div>
           </>
         ))}
+        <div ref={bottomEl}></div>
       </div>
       <InputBar setChatUsers={setChatUsers} />
     </>
