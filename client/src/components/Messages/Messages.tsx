@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { ChatUser } from "../../App";
+import { ChatUser } from "../pages/Home/Home";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
 export default function Messages({

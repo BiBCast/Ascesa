@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import "./index.css";
 import Messages from "../Messages/Messages";
-import { ChatUser } from "../../App";
+import { ChatUser } from "../pages/Home/Home";
 export function Chat({
   ChatUser,
   setChatUsers,

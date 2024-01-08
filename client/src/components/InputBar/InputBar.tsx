@@ -1,7 +1,7 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
 import "./index.css";
 import { io } from "socket.io-client";
-import { ChatUser } from "../../App";
+import { ChatUser } from "../pages/Home/Home";
 import SendImg from "./../../assets/send-button.png";
 const socket = io("http://localhost:3000/");
 export default function InputBar({
@@ -12,10 +12,10 @@ export default function InputBar({
   const [input, setInput] = useState("");
 
   function handleInput(e: KeyboardEvent<HTMLInputElement>) {
-    console.log(e);
+    console.log(e.key);
 
     if (e.key === "Enter") {
-      if (input === "") return;
+      if (input.trim() === "") return;
       //TODO implement user
       setChatUsers((prev) => {
         console.log(prev);
