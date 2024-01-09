@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 
 // TODO  use apollo client
+// TODO Use redux or similars
 const endpoint = "http://localhost:3000/graphql/";
 const FETCHALLQUERY = `
   {
@@ -22,13 +23,15 @@ export type ChatUser = {
 };
 
 export function Home() {
-  const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
+  const [ChatUsers, setChatUsers] = useState<ChatUser[]>([
+    { user: "io", message: "message" },
+  ]);
   //fetch data from api
   const {
     data,
     isLoading,
     error,
-  }: { data: ChatUser[]; isLoading: boolean; error: unknown } = useQuery(
+  }: { data: ChatUser[]; isLoading: boolean; error: boolean } = useQuery(
     "launches",
     async () => {
       const response = await axios({
@@ -72,7 +75,15 @@ export function Home() {
           </div>
         )}
         <div>
-          <Link to="login/">Login</Link>
+          <Link
+            to={{
+              pathname: "/login",
+            }}
+            state={[ChatUsers]} // your data array of objects
+            //const { state } = this.props.location
+          >
+            Login
+          </Link>
         </div>
         {/* TODO XXX we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
         {/* 2 possibility : YYY channels and chat are on the same level and , we do the fetch of the channels/ChatUserMessage  at the same level, we detect what channel is selected and pass the event to the same level of teh other before mentioned   */}
