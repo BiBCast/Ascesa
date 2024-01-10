@@ -56,12 +56,10 @@ io.on("connection", (socket) => {
     const user = msg.split(";")[0];
     const message = msg.split(";")[1];
     if (user.trim() === "") {
-      console.error("User null");
-      return true;
+      throw new Error("User null");
     }
     if (message.trim() === "") {
-      console.error("null message");
-      return true;
+      throw new Error("Message null");
     }
 
     //i have to pass also the user in the future
