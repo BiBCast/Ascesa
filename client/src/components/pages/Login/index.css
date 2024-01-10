@@ -1,0 +1,33 @@
+.container-login {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: #add8e6;
+  gap: 20%;
+  color: #226683;
+  & a:visited {
+    color: inherit;
+  }
+  & > .title {
+    font-size: 4em;
+  }
+  & > .button {
+    font-size: 4em;
+    padding: 1%;
+    background-color: #5bc5f3;
+    text-decoration: none;
+    border-radius: 1rem;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  & > input {
+    font-size: 2em;
+    padding: 1%;
+    background-color: #5bc5f3;
+    border-radius: 1rem;
+    
+  }
+}

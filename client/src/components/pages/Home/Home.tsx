@@ -3,7 +3,7 @@ import "./App.css";
 import { Chat } from "../../Chat/Chat";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // TODO  use apollo client
 // TODO Use redux or similars
@@ -23,6 +23,8 @@ export type ChatUser = {
 };
 
 export function Home() {
+  const location = useLocation();
+
   const [ChatUsers, setChatUsers] = useState<ChatUser[]>([
     { user: "io", message: "message" },
   ]);
@@ -74,13 +76,12 @@ export function Home() {
             <p>data collected</p>
           </div>
         )}
+        <div>{location.state}</div>
         <div>
           <Link
             to={{
-              pathname: "/login",
+              pathname: "/",
             }}
-            state={[ChatUsers]} // your data array of objects
-            //const { state } = this.props.location
           >
             Login
           </Link>
