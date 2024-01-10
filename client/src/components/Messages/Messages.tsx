@@ -15,7 +15,7 @@ export default function Messages({
     bottomEl?.current?.scrollIntoView();
   };
 
-  useEffect(scrollToBottom, [ChatUser.length]);
+  useEffect(scrollToBottom, [ChatUser?.length]);
   return (
     <>
       <div className="container">

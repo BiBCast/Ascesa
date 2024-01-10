@@ -10,6 +10,7 @@
     font-size: calc(var(--text-size) - 0.3em);
     width: 30%;
     text-overflow: clip;
+    font-size: 2em;
   }
   & > .send > img {
     height: 2em;

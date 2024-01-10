@@ -1,4 +1,4 @@
-import { ReactNode, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Chat } from "../../Chat/Chat";
 import axios from "axios";
@@ -57,7 +57,7 @@ export function Home() {
     ]);
     /*  console.log("refresh");
     console.log(data); */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //
   }, [JSON.stringify(data)]);
   // maybe []?
   //data is an array
@@ -76,7 +76,7 @@ export function Home() {
             <p>data collected</p>
           </div>
         )}
-        <div>{location.state}</div>
+        <div>User: {location.state}</div>
         <div>
           <Link
             to={{
