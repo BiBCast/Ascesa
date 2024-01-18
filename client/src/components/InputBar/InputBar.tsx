@@ -19,7 +19,7 @@ export default function InputBar({
       if (!user && typeof user != "string")
         throw new Error("the state(user) is not valid");
       if (input.trim() === "") return;
-      //TODO implement user
+
       setChatUsers((prev) => {
         return [...prev, { user: user, message: input }];
       });
@@ -33,7 +33,7 @@ export default function InputBar({
     const user = location.state;
     if (!user && typeof user != "string")
       throw new Error("the state(user) is not valid");
-    //TODO implement user
+
     setChatUsers((prev) => {
       console.log(prev);
 

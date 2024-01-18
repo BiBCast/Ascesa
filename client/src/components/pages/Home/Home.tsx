@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Chat } from "../../Chat/Chat";
-import axios from "axios";
-import { useQuery } from "react-query";
 import { Link, useLocation } from "react-router-dom";
+import { gql, useQuery } from "@apollo/client";
 
 // TODO  use apollo client
 // TODO Use redux or similars
-const endpoint = "http://localhost:3000/graphql/";
+/* const endpoint = "http://localhost:3000/graphql/";
 const FETCHALLQUERY = `
   {
     Users{
       user,
+      message
+    }
+  }
+`; */
+
+const GET_USERS = gql`
+  query GetUsers {
+    Users {
+      user
       message
     }
   }
@@ -29,7 +37,7 @@ export function Home() {
     { user: "io", message: "message" },
   ]);
   //fetch data from api
-  const {
+  /*   const {
     data,
     isLoading,
     error,
@@ -46,26 +54,32 @@ export function Home() {
 
       return response.data.data.Users; // Assuming the data structure is like { data: { Users: [...] } }
     }
-  );
+  ); */
+
+  const { loading, data, error } = useQuery(GET_USERS);
 
   useEffect(() => {
     //FIXME test data
-    /* setChatUsers(data); */
-    setChatUsers([
+    if (data) {
+      setChatUsers(data?.Users);
+    }
+
+    console.log(data?.Users);
+
+    /* setChatUsers([
       { user: "pietro", message: "test" },
       { user: "pietro", message: "test" },
-    ]);
-    /*  console.log("refresh");
-    console.log(data); */
+    ]); */
+    console.log("refresh");
     //
-  }, [JSON.stringify(data)]);
+  }, [JSON.stringify(data?.Users)]);
   // maybe []?
   //data is an array
 
   return (
     <>
       <div className="Channels">
-        {isLoading && "Loading..."}
+        {loading && "Loading..."}
         {error && (
           <div>
             <pre>{error.message}</pre>
@@ -86,12 +100,12 @@ export function Home() {
             Login
           </Link>
         </div>
-        {/* TODO XXX we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
+        {/*   we are inside a channel channels have child a channel , app collect the number of servers and qith maps create a dynamic structure , each structure (channel)have the nesting below   */}
         {/* 2 possibility : YYY channels and chat are on the same level and , we do the fetch of the channels/ChatUserMessage  at the same level, we detect what channel is selected and pass the event to the same level of teh other before mentioned   */}
         {/* we can pass a function to detect the selected channel created in the level of the  channels*/}
         {/* implement in the future a context manager like redux */}
         <Chat ChatUser={ChatUsers} setChatUsers={setChatUsers} />
-        {/* TODO pass all messages and user to the Messages component  */}
+        {/*  pass all messages and user to the Messages component  */}
       </div>
     </>
   );
