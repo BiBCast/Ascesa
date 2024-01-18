@@ -6,6 +6,7 @@ import { gql, useQuery } from "@apollo/client";
 
 // FIXME broadcast real time message
 // TODO Use redux or similars
+//FIXME dont update database
 /* const endpoint = "http://localhost:3000/graphql/";
 const FETCHALLQUERY = `
   {
@@ -63,13 +64,11 @@ export function Home() {
       setChatUsers(data?.Users);
     }
 
-    console.log(data?.Users);
-
     /* setChatUsers([
       { user: "pietro", message: "test" },
       { user: "pietro", message: "test" },
     ]); */
-    console.log("refresh");
+    console.log("fetch data");
     //
   }, [JSON.stringify(data?.Users)]);
   // maybe []?

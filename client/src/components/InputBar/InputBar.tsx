@@ -18,22 +18,17 @@ export default function InputBar({
   setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
 }) {
   const [receivedMsg, setReceivedMsg] = useState("");
-  const msgref = useRef("");
   socket.on("chat message", async (msg: string) => {
     setReceivedMsg(msg);
-    msgref.current = msg;
   });
   const [input, setInput] = useState("");
   const location = useLocation();
-
+  /* we send a request of added message to the backend , the back end send to every one the updated message , so we dont have to worry about the update of the chat because every chat is updated at the same time  */
   useEffect(() => {
-    console.log("received mesg  " + receivedMsg);
 
     if (!receivedMsg) return;
-    if (!msgref.current) return;
     const user = receivedMsg.split(";")[0];
     const message = receivedMsg.split(";")[1];
-    console.log("entrato");
 
     if (user.trim() === "") {
       console.error("User null");
@@ -46,7 +41,7 @@ export default function InputBar({
     setChatUsers((prev) => {
       return [...prev, { user: user, message: message }];
     });
-  }, [msgref.current]);
+  }, [receivedMsg]);
   /*   socket.on("chat message", async (msg: string) => {
     //TODO use objects
     console.log("msg " + msg);
@@ -73,9 +68,9 @@ export default function InputBar({
         throw new Error("the state(user) is not valid");
       if (input.trim() === "") return;
 
-      setChatUsers((prev) => {
+      /* setChatUsers((prev) => {
         return [...prev, { user: user, message: input }];
-      });
+      }); */
 
       socket.emit("chat message", user + ";" + input);
       setInput("");
@@ -87,11 +82,11 @@ export default function InputBar({
     if (!user && typeof user != "string")
       throw new Error("the state(user) is not valid");
 
-    setChatUsers((prev) => {
+    /* setChatUsers((prev) => {
       console.log(prev);
 
       return [...prev, { user: user, message: input }];
-    });
+    }); */
 
     socket.emit("chat message", user + ";" + input);
     setInput("");
