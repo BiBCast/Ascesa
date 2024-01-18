@@ -4,10 +4,8 @@ import { Chat } from "../../Chat/Chat";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
-// FIXME broadcast real time message
 // TODO Use redux or similars
-//FIXME dont update database
-// TODO re do error handling
+// FIXME on start up apollo give me wrong data
 
 const GET_USERS = gql`
   query GetUsers {
@@ -31,8 +29,11 @@ export function Home() {
   const { loading, data, error } = useQuery(GET_USERS);
 
   useEffect(() => {
+    console.log("prev chatusers " + ChatUsers);
+    console.log(data?.Users);
+
     if (data) {
-      setChatUsers(data?.Users);
+      setChatUsers(data.Users);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.Users)]);

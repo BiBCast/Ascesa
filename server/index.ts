@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
     }
 
     await schemaUser.create(chatUser);
-    /* await schemaUser.deleteMany({}); delete all docuemnts*/
+    /* await schemaUser.deleteMany({}); */
     io.emit("chat message", chatUser);
   });
 });
