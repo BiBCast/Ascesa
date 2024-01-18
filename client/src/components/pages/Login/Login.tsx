@@ -19,8 +19,7 @@ export function Login() {
           to={{
             pathname: "/home",
           }}
-          state={user} // your data array of objects
-          //const { state } = this.props.location
+          state={user}
         >
           Go to chat
         </Link>

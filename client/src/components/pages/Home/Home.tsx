@@ -7,15 +7,7 @@ import { gql, useQuery } from "@apollo/client";
 // FIXME broadcast real time message
 // TODO Use redux or similars
 //FIXME dont update database
-/* const endpoint = "http://localhost:3000/graphql/";
-const FETCHALLQUERY = `
-  {
-    Users{
-      user,
-      message
-    }
-  }
-`; */
+// TODO re do error handling
 
 const GET_USERS = gql`
   query GetUsers {
@@ -37,25 +29,6 @@ export function Home() {
   const [ChatUsers, setChatUsers] = useState<ChatUser[]>([
     { user: "io", message: "message" },
   ]);
-  //fetch data from api
-  /*   const {
-    data,
-    isLoading,
-    error,
-  }: { data: ChatUser[]; isLoading: boolean; error: boolean } = useQuery(
-    "launches",
-    async () => {
-      const response = await axios({
-        url: endpoint,
-        method: "POST",
-        data: {
-          query: FETCHALLQUERY,
-        },
-      });
-
-      return response.data.data.Users; // Assuming the data structure is like { data: { Users: [...] } }
-    }
-  ); */
 
   const { loading, data, error } = useQuery(GET_USERS);
 
@@ -63,16 +36,8 @@ export function Home() {
     if (data) {
       setChatUsers(data?.Users);
     }
-
-    /* setChatUsers([
-      { user: "pietro", message: "test" },
-      { user: "pietro", message: "test" },
-    ]); */
-    console.log("fetch data");
-    //
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.Users)]);
-  // maybe []?
-  //data is an array
 
   return (
     <>
