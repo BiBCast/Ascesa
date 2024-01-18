@@ -4,7 +4,8 @@ import { Chat } from "../../Chat/Chat";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
-// TODO  use apollo client
+// FIXME broadcast real time message
+// FIXME When to many messages ui bugs
 // TODO Use redux or similars
 /* const endpoint = "http://localhost:3000/graphql/";
 const FETCHALLQUERY = `
@@ -59,7 +60,6 @@ export function Home() {
   const { loading, data, error } = useQuery(GET_USERS);
 
   useEffect(() => {
-    //FIXME test data
     if (data) {
       setChatUsers(data?.Users);
     }

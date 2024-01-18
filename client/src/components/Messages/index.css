@@ -6,7 +6,7 @@
   flex-direction: column;
   overflow: scroll;
   scroll-behavior: smooth;
-  overflow-y: hidden;
+  padding-block: 1%;
   gap: 2%;
   & .chatbox {
     display: flex;
