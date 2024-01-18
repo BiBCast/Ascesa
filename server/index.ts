@@ -53,6 +53,7 @@ io.on("connection", (socket) => {
   // user;message
   socket.on("chat message", async (msg: string) => {
     //TODO use objects
+
     const user = msg.split(";")[0];
     const message = msg.split(";")[1];
     if (user.trim() === "") {
@@ -68,7 +69,7 @@ io.on("connection", (socket) => {
       message: message,
     });
     /* await schemaUser.deleteMany({}); delete all docuemnts*/
-    io.emit("chat message", message);
+    io.emit("chat message", user + ";" + message);
   });
 });
 //start db and server

@@ -1,4 +1,11 @@
-import { Dispatch, KeyboardEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./index.css";
 import { io } from "socket.io-client";
 import { ChatUser } from "../pages/Home/Home";
@@ -10,9 +17,55 @@ export default function InputBar({
 }: {
   setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
 }) {
+  const [receivedMsg, setReceivedMsg] = useState("");
+  const msgref = useRef("");
+  socket.on("chat message", async (msg: string) => {
+    setReceivedMsg(msg);
+    msgref.current = msg;
+  });
   const [input, setInput] = useState("");
   const location = useLocation();
 
+  useEffect(() => {
+    console.log("received mesg  " + receivedMsg);
+
+    if (!receivedMsg) return;
+    if (!msgref.current) return;
+    const user = receivedMsg.split(";")[0];
+    const message = receivedMsg.split(";")[1];
+    console.log("entrato");
+
+    if (user.trim() === "") {
+      console.error("User null");
+      return;
+    }
+    if (message.trim() === "") {
+      console.error("message null");
+      return;
+    }
+    setChatUsers((prev) => {
+      return [...prev, { user: user, message: message }];
+    });
+  }, [msgref.current]);
+  /*   socket.on("chat message", async (msg: string) => {
+    //TODO use objects
+    console.log("msg " + msg);
+    const user = msg.split(";")[0];
+    const message = msg.split(";")[1];
+
+    if (user.trim() === "") {
+      console.error("User null");
+      return;
+    }
+    if (message.trim() === "") {
+      console.error("message null");
+      return;
+    }
+
+    setChatUsers((prev) => {
+      return [...prev, { user: user, message: input }];
+    });
+  }); */
   function handleInput(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       const user = location.state;

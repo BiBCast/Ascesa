@@ -5,7 +5,6 @@ import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
 // FIXME broadcast real time message
-// FIXME When to many messages ui bugs
 // TODO Use redux or similars
 /* const endpoint = "http://localhost:3000/graphql/";
 const FETCHALLQUERY = `
