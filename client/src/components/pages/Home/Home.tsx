@@ -26,9 +26,7 @@ export type ChatUser = {
 export function Home() {
   const location = useLocation();
 
-  const [ChatUsers, setChatUsers] = useState<ChatUser[]>([
-    { user: "io", message: "message" },
-  ]);
+  const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
 
   const { loading, data, error } = useQuery(GET_USERS);
 

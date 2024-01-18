@@ -13,6 +13,11 @@ mongoose.connect(
   "mongodb+srv://admin:admin@castdb.ju6ktqj.mongodb.net/?retryWrites=true&w=majority"
 );
 const db = mongoose.connection;
+//TODO make dynamic from graphql
+export type ChatUser = {
+  user: string;
+  message: string;
+};
 
 app.use(express.json());
 app.use(cors());
@@ -26,24 +31,6 @@ const io = new Server(server, {
 //ROUTES graphql
 app.all("/graphql", createHandler({ schema: ChatSchema }));
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
-////ROUTES
-/* app.get("/create", async (req: Request, res: Response) => {
-  try {
-    const user = await schemaUser.create({
-      // example create with database
-      user: "prova2",
-      message: "messaggio2",
-    });
-    res.status(200).json(user);
-  } catch (error: unknown) {
-    res.status(500).json({ Message: (error as Error).message });
-  }
-}); */
-//  replaced with react port 5173
-/* app.get("/", (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../chat.html"));
-}); */
-
 //comunication client/server  for instant message
 io.on("connection", (socket) => {
   console.log("user connected");
@@ -51,30 +38,28 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
   // user;message
-  socket.on("chat message", async (msg: string) => {
+  socket.on("chat message", async (chatUser: ChatUser) => {
     //TODO use objects
 
-    const user = msg.split(";")[0];
-    const message = msg.split(";")[1];
+    const user = chatUser.user;
+    const message = chatUser.message;
     if (user.trim() === "") {
-      throw new Error("User null");
+      console.error("User null");
+      return;
     }
     if (message.trim() === "") {
-      throw new Error("Message null");
+      console.error("Message null");
+      return;
     }
 
-    //i have to pass also the user in the future
-    await schemaUser.create({
-      user: user,
-      message: message,
-    });
+    await schemaUser.create(chatUser);
     /* await schemaUser.deleteMany({}); delete all docuemnts*/
-    io.emit("chat message", user + ";" + message);
+    io.emit("chat message", chatUser);
   });
 });
 //start db and server
 db.on("error", (error) => {
-  console.log(error);
+  console.error(error);
 });
 db.on("open", () => {
   console.log("connected to database");
