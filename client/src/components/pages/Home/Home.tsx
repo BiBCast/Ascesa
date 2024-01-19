@@ -26,12 +26,11 @@ export function Home() {
 
   const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
 
-  const { loading, data, error } = useQuery(GET_USERS);
-
+  const { loading, data, error } = useQuery(GET_USERS, {
+    //TODO ho to optimize the fetching
+    fetchPolicy: "no-cache",
+  });
   useEffect(() => {
-    console.log("prev chatusers " + ChatUsers);
-    console.log(data?.Users);
-
     if (data) {
       setChatUsers(data.Users);
     }
