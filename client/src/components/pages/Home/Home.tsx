@@ -4,8 +4,7 @@ import { Chat } from "../../Chat/Chat";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
-// TODO Use redux or similars
-// FIXME on start up apollo give me wrong data
+// TODO Use locale storage function of apollo cache
 
 const GET_USERS = gql`
   query GetUsers {
@@ -27,7 +26,7 @@ export function Home() {
   const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
 
   const { loading, data, error } = useQuery(GET_USERS, {
-    //TODO ho to optimize the fetching
+    //TODO to optimize the fetching
     fetchPolicy: "no-cache",
   });
   useEffect(() => {

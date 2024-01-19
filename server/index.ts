@@ -39,7 +39,6 @@ io.on("connection", (socket) => {
   });
   // user;message
   socket.on("chat message", async (chatUser: ChatUser) => {
-    //TODO use objects
 
     const user = chatUser.user;
     const message = chatUser.message;
