@@ -1,25 +1,22 @@
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ChatUser } from "../pages/Home/Home";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
-export default function Messages({
-  ChatUser,
-  setChatUsers,
-}: {
-  ChatUser: ChatUser[];
-  setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
-}) {
+import { chatUserItemsVar } from "../../cache";
+export default function Messages() {
   const bottomEl = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     bottomEl?.current?.scrollIntoView();
   };
 
-  useEffect(scrollToBottom, [ChatUser?.length]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(scrollToBottom, [JSON.stringify(chatUserItemsVar())]);
   return (
     <>
+      {console.log(chatUserItemsVar())}
       <div className="container">
-        {ChatUser?.map((user: ChatUser, index: number) => (
+        {chatUserItemsVar().map((user: ChatUser, index: number) => (
           <div className="chatbox" key={index}>
             <div className="baloon">
               <div>
@@ -33,7 +30,7 @@ export default function Messages({
         ))}
         <div ref={bottomEl}></div>
       </div>
-      <InputBar setChatUsers={setChatUsers} />
+      <InputBar />
     </>
   );
 }

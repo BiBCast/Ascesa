@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import { Chat } from "../../Chat/Chat";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
+import { chatUserItemsVar } from "../../../cache";
 
 // TODO Use locale storage function of apollo cache
+//TODO explicit say to apollo i want to update the cache
 
 const GET_USERS = gql`
   query GetUsers {
@@ -23,15 +25,13 @@ export type ChatUser = {
 export function Home() {
   const location = useLocation();
 
-  const [ChatUsers, setChatUsers] = useState<ChatUser[]>([]);
-
   const { loading, data, error } = useQuery(GET_USERS, {
     //TODO to optimize the fetching
     fetchPolicy: "no-cache",
   });
   useEffect(() => {
     if (data) {
-      setChatUsers(data.Users);
+      chatUserItemsVar(data.Users);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.Users)]);
@@ -64,7 +64,7 @@ export function Home() {
         {/* 2 possibility : YYY channels and chat are on the same level and , we do the fetch of the channels/ChatUserMessage  at the same level, we detect what channel is selected and pass the event to the same level of teh other before mentioned   */}
         {/* we can pass a function to detect the selected channel created in the level of the  channels*/}
         {/* implement in the future a context manager like redux */}
-        <Chat ChatUser={ChatUsers} setChatUsers={setChatUsers} />
+        <Chat />
         {/*  pass all messages and user to the Messages component  */}
       </div>
     </>

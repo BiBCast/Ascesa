@@ -1,22 +1,13 @@
-import {
-  Dispatch,
-  KeyboardEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import "./index.css";
 import { io } from "socket.io-client";
 import { ChatUser } from "../pages/Home/Home";
 import SendImg from "./../../assets/send-button.png";
 import { useLocation } from "react-router-dom";
+import { chatUserItemsVar } from "../../cache";
 const socket = io("http://localhost:3000/");
 
-export default function InputBar({
-  setChatUsers,
-}: {
-  setChatUsers: Dispatch<SetStateAction<ChatUser[]>>;
-}) {
+export default function InputBar() {
   const [receivedMsg, setReceivedMsg] = useState<ChatUser>();
   const [input, setInput] = useState("");
   const location = useLocation();
@@ -39,9 +30,8 @@ export default function InputBar({
       console.error("message null");
       return;
     }
-    setChatUsers((prev) => {
-      return [...prev, receivedMsg];
-    });
+
+    chatUserItemsVar([...chatUserItemsVar(), receivedMsg]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receivedMsg]);
 
