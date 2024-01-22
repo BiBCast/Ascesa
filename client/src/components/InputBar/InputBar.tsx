@@ -42,9 +42,6 @@ export default function InputBar() {
 
   function handleInput(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key !== "Enter") return;
-    console.log(e.key);
-    console.log(e.ctrlKey);
-
     if (e.ctrlKey && e.key === "Enter") {
       setInput((e) => e + "\n");
       return;
