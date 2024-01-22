@@ -6,11 +6,13 @@
   position: sticky;
   bottom: 0;
   padding-block: 1%;
-  & > input {
+  & > textarea {
     font-size: calc(var(--text-size) - 0.3em);
-    width: 30%;
-    text-overflow: clip;
+    font-size: var(--text-size);
+    width: 90%;
     font-size: clamp(1rem, 2.5vw, 2rem);
+    resize: none;
+    border-radius: 5px;
   }
   & > .send > img {
     height: clamp(2em, 2.5vw, 3em);

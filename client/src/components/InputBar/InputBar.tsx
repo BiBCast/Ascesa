@@ -1,16 +1,21 @@
-import { KeyboardEvent, useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 import "./index.css";
 import { io } from "socket.io-client";
 import { ChatUser } from "../pages/Home/Home";
 import SendImg from "./../../assets/send-button.png";
 import { useLocation } from "react-router-dom";
 import { chatUserItemsVar } from "../../cache";
+import useAutosizeTextArea from "../../useAutoSizeTextArea";
 const socket = io("http://localhost:3000/");
 
 export default function InputBar() {
   const [receivedMsg, setReceivedMsg] = useState<ChatUser>();
   const [input, setInput] = useState("");
   const location = useLocation();
+
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useAutosizeTextArea(textAreaRef.current, input);
 
   socket.on("chat message", async (chatUser: ChatUser) => {
     setReceivedMsg(chatUser);
@@ -35,7 +40,7 @@ export default function InputBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receivedMsg]);
 
-  function handleInput(e: KeyboardEvent<HTMLInputElement>) {
+  function handleInput(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key !== "Enter") return;
     const user = location.state;
     if (!user && typeof user != "string") {
@@ -67,12 +72,13 @@ export default function InputBar() {
 
   return (
     <div className="Inputbar">
-      <input
-        type="text"
+      <textarea
         onChange={(e) => setInput(e.currentTarget.value)}
         value={input}
         placeholder="Canale"
         onKeyDown={handleInput}
+        ref={textAreaRef}
+        rows={1}
       />
 
       <div className="send">
