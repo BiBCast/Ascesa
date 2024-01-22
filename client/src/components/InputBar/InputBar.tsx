@@ -42,6 +42,13 @@ export default function InputBar() {
 
   function handleInput(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key !== "Enter") return;
+    console.log(e.key);
+    console.log(e.ctrlKey);
+
+    if (e.ctrlKey && e.key === "Enter") {
+      setInput((e) => e + "\n");
+      return;
+    }
     const user = location.state;
     if (!user && typeof user != "string") {
       console.error("the state(user) is not valid");
@@ -75,7 +82,7 @@ export default function InputBar() {
       <textarea
         onChange={(e) => setInput(e.currentTarget.value)}
         value={input}
-        placeholder="Canale"
+        placeholder="Ctrl + Enter new line"
         onKeyDown={handleInput}
         ref={textAreaRef}
         rows={1}
