@@ -14,7 +14,6 @@ export default function Messages() {
   useEffect(scrollToBottom, [JSON.stringify(chatUserItemsVar())]);
   return (
     <>
-      {console.log(chatUserItemsVar())}
       <div className="container">
         {chatUserItemsVar().map((user: ChatUser, index: number) => (
           <div className="chatbox" key={index}>

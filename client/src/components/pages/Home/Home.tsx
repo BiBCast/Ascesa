@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./App.css";
 import { Chat } from "../../Chat/Chat";
 import { Link, useLocation } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useReactiveVar } from "@apollo/client";
 import { chatUserItemsVar } from "../../../cache";
 
 // TODO Use locale storage function of apollo cache
@@ -24,7 +24,8 @@ export type ChatUser = {
 
 export function Home() {
   const location = useLocation();
-
+  // i don't know why i should put it here but it works
+  const chatUser = useReactiveVar(chatUserItemsVar);
   const { loading, data, error } = useQuery(GET_USERS, {
     //TODO to optimize the fetching
     fetchPolicy: "no-cache",
@@ -32,6 +33,9 @@ export function Home() {
   useEffect(() => {
     if (data) {
       chatUserItemsVar(data.Users);
+      console.log("chatuser");
+
+      console.log(chatUser);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.Users)]);
