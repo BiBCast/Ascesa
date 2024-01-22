@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./index.css";
 export function Login() {
-  const [user, setInput] = useState("");
+  const location = useLocation();
+  const [user, setInput] = useState(location.state ? location.state : "");
 
   return (
     <div className="container-login">

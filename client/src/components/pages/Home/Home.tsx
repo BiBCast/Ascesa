@@ -5,8 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery, useReactiveVar } from "@apollo/client";
 import { chatUserItemsVar } from "../../../cache";
 
-// TODO Use locale storage function of apollo cache
-//TODO explicit say to apollo i want to update the cache
+// TODO Channel
 
 const GET_USERS = gql`
   query GetUsers {
@@ -60,6 +59,7 @@ export function Home() {
             to={{
               pathname: "/",
             }}
+            state={location.state}
           >
             Login
           </Link>

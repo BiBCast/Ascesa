@@ -12,6 +12,7 @@ export default function InputBar() {
   const [receivedMsg, setReceivedMsg] = useState<ChatUser>();
   const [input, setInput] = useState("");
   const location = useLocation();
+  const user = location.state;
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -46,7 +47,6 @@ export default function InputBar() {
       setInput((e) => e + "\n");
       return;
     }
-    const user = location.state;
     if (!user && typeof user != "string") {
       console.error("the state(user) is not valid");
       return;
@@ -61,7 +61,6 @@ export default function InputBar() {
   }
   function handleInputSendbutton() {
     if (input === "") return;
-    const user = location.state;
     if (!user && typeof user != "string") {
       console.error("the state(user) is not valid");
       return;
