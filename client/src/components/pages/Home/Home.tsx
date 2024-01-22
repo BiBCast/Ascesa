@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery, useReactiveVar } from "@apollo/client";
 import { chatUserItemsVar } from "../../../cache";
 
-// TODO Channel
+// TODO Channel? pubblicare? 
 
 const GET_USERS = gql`
   query GetUsers {

@@ -3,8 +3,11 @@ import { ChatUser } from "../pages/Home/Home";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
 import { chatUserItemsVar } from "../../cache";
+import { useLocation } from "react-router-dom";
 export default function Messages() {
   const bottomEl = useRef<null | HTMLDivElement>(null);
+  const location = useLocation();
+  const userPage = location.state;
 
   const scrollToBottom = () => {
     bottomEl?.current?.scrollIntoView();
@@ -16,7 +19,12 @@ export default function Messages() {
     <>
       <div className="container">
         {chatUserItemsVar().map((user: ChatUser, index: number) => (
-          <div className="chatbox" key={index}>
+          <div
+            className={
+              userPage !== user.user ? "chatboxReceived" : "chatboxSent"
+            }
+            key={index}
+          >
             <div className="baloon">
               <div>
                 <p className="user">{user.user}</p>
