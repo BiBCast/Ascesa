@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
-import { ChatUser, chatUserItemsVar } from "../../cache";
+import { ChatUser } from "../../cache";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
@@ -38,7 +38,7 @@ export default function Messages() {
     bottomEl?.current?.scrollIntoView();
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(scrollToBottom, [JSON.stringify(chatUserItemsVar())]);
+  useEffect(scrollToBottom, [JSON.stringify(chatMessages)]);
   return (
     <>
       {loading && <div>{loading}</div>}
