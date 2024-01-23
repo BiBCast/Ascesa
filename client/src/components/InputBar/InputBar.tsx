@@ -91,7 +91,11 @@ export default function InputBar({
   return (
     <div className="Inputbar">
       <textarea
-        onChange={(e) => setInput(e.currentTarget.value)}
+        onChange={(e) =>
+          setInput(
+            e.currentTarget.value.trim() === "" ? "" : e.currentTarget.value
+          )
+        }
         value={input}
         placeholder="Ctrl + Enter new line"
         onKeyDown={handleInput}
