@@ -1,14 +1,24 @@
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "./index.css";
 import { io } from "socket.io-client";
-import { ChatUser } from "../pages/Home/Home";
 import SendImg from "./../../assets/send-button.png";
 import { useLocation } from "react-router-dom";
-import { chatUserItemsVar } from "../../cache";
+import { ChatUser } from "../../cache";
 import useAutosizeTextArea from "../../useAutoSizeTextArea";
 const socket = io("http://localhost:3000/");
 
-export default function InputBar() {
+export default function InputBar({
+  setChatMessages,
+}: {
+  setChatMessages: Dispatch<SetStateAction<ChatUser[]>>;
+}) {
   const [receivedMsg, setReceivedMsg] = useState<ChatUser>();
   const [input, setInput] = useState("");
   const location = useLocation();
@@ -37,18 +47,22 @@ export default function InputBar() {
       return;
     }
 
-    chatUserItemsVar([...chatUserItemsVar(), receivedMsg]);
+    /* chatUserItemsVar([...chatUserItemsVar(), receivedMsg]); */
+    setChatMessages((prev) => {
+      return [...prev, receivedMsg];
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receivedMsg]);
 
   function handleInput(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key !== "Enter") return;
-    if (e.ctrlKey && e.key === "Enter") {
-      setInput((e) => e + "\n");
-      return;
-    }
+
     if (!user && typeof user != "string") {
       console.error("the state(user) is not valid");
+      return;
+    }
+    if (e.ctrlKey && e.key === "Enter") {
+      setInput((e) => e + "\n");
       return;
     }
     if (input.trim() === "") return;
@@ -57,6 +71,7 @@ export default function InputBar() {
       user: user,
       message: input,
     } as ChatUser);
+
     setInput("");
   }
   function handleInputSendbutton() {

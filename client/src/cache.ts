@@ -1,5 +1,10 @@
+//not utilizzated
+
 import { InMemoryCache, gql, makeVar } from "@apollo/client";
-import { ChatUser } from "./components/pages/Home/Home";
+export type ChatUser = {
+  user: string;
+  message: string;
+};
 
 export const GET_CHAT_USERS = gql`
   query GetChatUserItems {
