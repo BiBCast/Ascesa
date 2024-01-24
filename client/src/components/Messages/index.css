@@ -8,6 +8,12 @@
   scroll-behavior: smooth;
   padding-block: 1%;
   gap: 2%;
+
+  & .message {
+    word-wrap: break-word;
+    white-space: pre-line;
+    white-space: pre-wrap;
+  }
   & .chatboxReceived {
     display: flex;
     flex-direction: column;
@@ -24,9 +30,6 @@
       box-shadow: 0 0 3px #2c61b1;
       & .user {
         color: #0f7fca;
-      }
-      & .message {
-        word-wrap: break-word;
       }
     }
 
@@ -51,10 +54,6 @@
       box-shadow: 0 0 3px #2c61b1;
       & .user {
         color: #0f7fca;
-      }
-      & .message {
-        word-wrap: break-word;
-        white-space: pre-line;
       }
     }
   }
