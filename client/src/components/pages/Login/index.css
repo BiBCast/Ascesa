@@ -14,7 +14,7 @@
     font-size: 4em;
   }
   & > .button {
-    font-size: 4em;
+    font-size: 2em;
     padding: 1%;
     background-color: #5bc5f3;
     text-decoration: none;
@@ -25,9 +25,10 @@
   }
   & > input {
     font-size: 2em;
+    text-align: center;
+    width: 90%;
     padding: 1%;
     background-color: #5bc5f3;
     border-radius: 1rem;
-    
   }
 }

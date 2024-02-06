@@ -4,8 +4,9 @@ import App from "./App.tsx";
 import "./index.css";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
+// FIXME change url server dont work on  mobile 
 const client = new ApolloClient({
-  uri: "http://192.168.1.11:3000/graphql/",
+  uri: "http://localhost:3000/graphql/",
   cache: new InMemoryCache(),
 });
 ReactDOM.createRoot(document.getElementById("root")!).render(
