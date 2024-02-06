@@ -1,0 +1,19 @@
+.selectable_channel {
+  width: 100%;
+  border: none;
+
+  background-color: antiquewhite;
+  display: flex;
+  gap: 10%;
+  & > .container {
+    background-color: transparent;
+    flex-grow: 1;
+    & > p {
+      text-overflow: ellipsis;
+    }
+  }
+
+  &:focus {
+    background-color: bisque;
+  }
+}
