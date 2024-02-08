@@ -19,6 +19,12 @@ export type ChatUser = {
   message: string;
 };
 
+async function deleteAll() {
+  await schemaUser.deleteMany({});
+  await schemaChannel.deleteMany({});
+  await schemaMessage.deleteMany({});
+}
+
 app.use(express.json());
 app.use(cors());
 const server = http.createServer(app);
@@ -33,6 +39,7 @@ app.all("/graphql", createHandler({ schema: ChatSchema }));
 
 // Route to create mock data
 app.get("/createMockData", async (req, res) => {
+  await deleteAll();
   try {
     // Generate mock data
     const usersData = [
@@ -103,9 +110,7 @@ app.get("/createMockData", async (req, res) => {
 });
 
 app.all("/deleteAll", async (req, res) => {
-  await schemaUser.deleteMany({});
-  await schemaChannel.deleteMany({});
-  await schemaMessage.deleteMany({});
+  await deleteAll();
   res.send("Deleted all.");
 });
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
