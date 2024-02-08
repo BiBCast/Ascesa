@@ -8,8 +8,8 @@ export function Home() {
   return (
     <>
       <div className="Channels">
-        <Sidebar />
-        {/* <Chat /> */}
+        {/* <Sidebar /> */}
+        <Chat />
       </div>
     </>
   );

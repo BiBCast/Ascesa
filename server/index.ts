@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
 import expressPlay from "graphql-playground-middleware-express";
-import { schemaUser } from "./schemaChat";
-import { ChatSchema } from "./graphql";
+import { schemaChannel, schemaMessage, schemaUser } from "./schemas/schemas";
+import { ChatSchema } from "./graphql/graphql";
 import cors from "cors";
 //setup mongoose
 mongoose.connect(
@@ -30,6 +30,49 @@ const io = new Server(server, {
 });
 //ROUTES graphql
 app.all("/graphql", createHandler({ schema: ChatSchema }));
+app.get("/createMockData", async (req, res) => {
+  try {
+    // Generate mock data
+    const users = await schemaUser.insertMany([
+      { user: "Alice", message: null, channel_ids: [] },
+      { user: "Bob", message: null, channel_ids: [] },
+      // Add more users as needed
+    ]);
+
+    const messages = await schemaMessage.insertMany([
+      {
+        _creator: users[0]._id,
+        content: "Hello, world!",
+        user_id: users[1]._id,
+      },
+      { _creator: users[1]._id, content: "Hi there!", user_id: users[0]._id },
+      // Add more messages as needed
+    ]);
+
+    const channels = await schemaChannel.insertMany([
+      { title: "General", users: [users[0]._id, users[1]._id] },
+      // Add more channels as needed
+    ]);
+
+    // Update user data with message and channel references
+    await schemaUser.updateOne(
+      { _id: users[0]._id },
+      { $set: { message: messages[0]._id, channel_ids: [channels[0]._id] } }
+    );
+    await schemaUser.updateOne(
+      { _id: users[1]._id },
+      { $set: { message: messages[1]._id, channel_ids: [channels[0]._id] } }
+    );
+
+    res.send("Mock data created successfully.");
+  } catch (error) {
+    console.error("Error creating mock data:", error);
+    res.status(500).send("Error creating mock data.");
+  }
+});
+app.all("/deleteAll", async () => {
+  await schemaUser.deleteMany({});
+});
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 //comunication client/server  for instant message
 io.on("connection", (socket) => {
@@ -50,8 +93,7 @@ io.on("connection", (socket) => {
       return;
     }
 
-    await schemaUser.create(chatUser);
-    /* await schemaUser.deleteMany({}); */
+    /* await schemaUser.create(chatUser); */
     io.emit("chat message", chatUser);
   });
 });

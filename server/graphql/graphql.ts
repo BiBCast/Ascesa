@@ -5,7 +5,7 @@ import {
   GraphQLID,
   GraphQLList,
 } from "graphql";
-import { schemaUser } from "./schemaChat";
+import { schemaUser } from "../schemas/schemas";
 // Construct a schema, using GraphQL schema language
 //get all, get by id,
 // schema
