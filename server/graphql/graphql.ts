@@ -9,12 +9,20 @@ import { schemaUser } from "../schemas/schemas";
 // Construct a schema, using GraphQL schema language
 //get all, get by id,
 // schema
+const MessageType = new GraphQLObjectType({
+  name: "Query2",
+  fields: () => ({
+    _creator: { type: UserType },
+    content: { type: GraphQLString },
+    user_id: { type: UserType },
+  }),
+});
 const UserType = new GraphQLObjectType({
   name: "Query",
   fields: () => ({
     id: { type: GraphQLID },
     user: { type: GraphQLString },
-    message: { type: GraphQLString },
+    messages: { type: new GraphQLList(MessageType) },
   }),
 });
 //the json args must have the key of the schema
@@ -26,7 +34,9 @@ const RootQuery = new GraphQLObjectType({
       args: {},
       async resolve() {
         //return a json {arg:value,...} and filter about the parameter of the json
-        const users = await schemaUser.find({});
+        const users = await schemaUser.find({}).populate("messages");
+        console.log(users);
+
         return users;
       },
     },

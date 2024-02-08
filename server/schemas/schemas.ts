@@ -3,7 +3,7 @@ import { Schema, Types, model } from "mongoose";
 const User = new Schema({
   _id: Schema.Types.ObjectId,
   user: String,
-  message: { type: Types.ObjectId, ref: "Message" },
+  messages: { type: Types.ObjectId, ref: "Message" },
   channel_ids: [{ type: Types.ObjectId, ref: "Channel" }],
 });
 

@@ -43,8 +43,8 @@ app.get("/createMockData", async (req, res) => {
   try {
     // Generate mock data
     const usersData = [
-      { user: "Alice", message: null, channel_ids: [] },
-      { user: "Bob", message: null, channel_ids: [] },
+      { user: "Alice", messages: null, channel_ids: [] },
+      { user: "Bob", messages: null, channel_ids: [] },
       // Add more users as needed
     ];
 
@@ -87,7 +87,7 @@ app.get("/createMockData", async (req, res) => {
       { _id: usersWithIds[0]._id },
       {
         $set: {
-          message: messagesWithIds[0]._id,
+          messages: messagesWithIds[0]._id,
           channel_ids: [channelsWithIds[0]._id],
         },
       }
@@ -96,7 +96,7 @@ app.get("/createMockData", async (req, res) => {
       { _id: usersWithIds[1]._id },
       {
         $set: {
-          message: messagesWithIds[1]._id,
+          messages: messagesWithIds[1]._id,
           channel_ids: [channelsWithIds[0]._id],
         },
       }
