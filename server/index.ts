@@ -30,38 +30,69 @@ const io = new Server(server, {
 });
 //ROUTES graphql
 app.all("/graphql", createHandler({ schema: ChatSchema }));
+
+// Route to create mock data
 app.get("/createMockData", async (req, res) => {
   try {
     // Generate mock data
-    const users = await schemaUser.insertMany([
+    const usersData = [
       { user: "Alice", message: null, channel_ids: [] },
       { user: "Bob", message: null, channel_ids: [] },
       // Add more users as needed
-    ]);
+    ];
 
-    const messages = await schemaMessage.insertMany([
+    const users = await schemaUser.insertMany(usersData);
+    const usersWithIds = await schemaUser.find({
+      user: { $in: users.map((user) => user.user) },
+    });
+
+    const messagesData = [
       {
-        _creator: users[0]._id,
+        _creator: usersWithIds[0]._id,
         content: "Hello, world!",
-        user_id: users[1]._id,
+        user_id: usersWithIds[1]._id,
       },
-      { _creator: users[1]._id, content: "Hi there!", user_id: users[0]._id },
+      {
+        _creator: usersWithIds[1]._id,
+        content: "Hi there!",
+        user_id: usersWithIds[0]._id,
+      },
       // Add more messages as needed
-    ]);
+    ];
 
-    const channels = await schemaChannel.insertMany([
-      { title: "General", users: [users[0]._id, users[1]._id] },
+    const messages = await schemaMessage.insertMany(messagesData);
+    const messagesWithIds = await schemaMessage.find({
+      _creator: { $in: messages.map((message) => message._creator) },
+    });
+
+    const channelsData = [
+      { title: "General", users: [usersWithIds[0]._id, usersWithIds[1]._id] },
       // Add more channels as needed
-    ]);
+    ];
+
+    const channels = await schemaChannel.insertMany(channelsData);
+    const channelsWithIds = await schemaChannel.find({
+      title: { $in: channels.map((channel) => channel.title) },
+    });
 
     // Update user data with message and channel references
     await schemaUser.updateOne(
-      { _id: users[0]._id },
-      { $set: { message: messages[0]._id, channel_ids: [channels[0]._id] } }
+      { _id: usersWithIds[0]._id },
+      {
+        $set: {
+          message: messagesWithIds[0]._id,
+          channel_ids: [channelsWithIds[0]._id],
+        },
+      }
     );
     await schemaUser.updateOne(
-      { _id: users[1]._id },
-      { $set: { message: messages[1]._id, channel_ids: [channels[0]._id] } }
+      { _id: usersWithIds[1]._id },
+      {
+        $set: {
+          message: messagesWithIds[1]._id,
+          channel_ids: [channelsWithIds[0]._id],
+        },
+      }
     );
 
     res.send("Mock data created successfully.");
@@ -70,8 +101,12 @@ app.get("/createMockData", async (req, res) => {
     res.status(500).send("Error creating mock data.");
   }
 });
-app.all("/deleteAll", async () => {
+
+app.all("/deleteAll", async (req, res) => {
   await schemaUser.deleteMany({});
+  await schemaChannel.deleteMany({});
+  await schemaMessage.deleteMany({});
+  res.send("Deleted all.");
 });
 app.get("/playground", expressPlay({ endpoint: "/graphql" }));
 //comunication client/server  for instant message
