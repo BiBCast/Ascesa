@@ -79,6 +79,7 @@ const RootQuery = new GraphQLObjectType({
           .find({})
           .populate("messages")
           .populate("channel_ids");
+
         console.log(users);
 
         return users;

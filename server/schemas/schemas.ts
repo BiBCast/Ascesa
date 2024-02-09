@@ -16,7 +16,7 @@ const message = new Schema({
 const channel = new Schema({
   _id: Schema.Types.ObjectId,
   title: String,
-  users: [{ type: Types.ObjectId, ref: "User" }],
+  users: { type: Types.ObjectId, ref: "User" },
 });
 
 export const schemaUser = model("User", User);

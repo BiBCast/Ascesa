@@ -88,7 +88,7 @@ app.get("/createMockData", async (req, res) => {
       {
         $set: {
           messages: messagesWithIds[0]._id,
-          channel_ids: channelsWithIds[0]._id,
+          channel_ids: [channelsWithIds[0]._id, channelsWithIds[0]._id],
         },
       }
     );
@@ -97,7 +97,7 @@ app.get("/createMockData", async (req, res) => {
       {
         $set: {
           messages: messagesWithIds[1]._id,
-          channel_ids: channelsWithIds[0]._id,
+          channel_ids: [channelsWithIds[0]._id, channelsWithIds[0]._id],
         },
       }
     );
