@@ -4,11 +4,11 @@ const User = new Schema({
   _id: Schema.Types.ObjectId,
   user: String,
   messages: { type: Types.ObjectId, ref: "Message" },
-  channel_ids: [{ type: Types.ObjectId, ref: "Channel" }],
+  channel_ids: { type: Types.ObjectId, ref: "Channel" },
 });
 
 const message = new Schema({
-  _creator: { type: Schema.Types.ObjectId, ref: "User" },
+  _creator: { type: Types.ObjectId, ref: "User" },
   content: String,
   user_id: { type: Types.ObjectId, ref: "User" },
 });
