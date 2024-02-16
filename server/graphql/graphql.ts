@@ -22,7 +22,6 @@ const ChannelType: GraphQLObjectType = new GraphQLObjectType({
 const MessageType: GraphQLObjectType = new GraphQLObjectType({
   name: "messageType",
   fields: () => ({
-    _creator: { type: UserType },
     content: { type: GraphQLString },
     user_id: { type: UserType },
   }),
@@ -79,9 +78,6 @@ const RootQuery = new GraphQLObjectType({
           .find({})
           .populate("messages")
           .populate("channel_ids");
-
-        console.log(users);
-
         return users;
       },
     },
@@ -94,7 +90,6 @@ const RootQuery = new GraphQLObjectType({
           .findOne({ user: args["user"] })
           .populate("messages")
           .populate("channel_ids");
-        console.log(user);
         return user;
       },
     },

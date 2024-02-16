@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 const app: Express = express(); /* use route */
 import http from "http";
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
 import expressPlay from "graphql-playground-middleware-express";
@@ -53,22 +53,18 @@ app.get("/createMockData", async (req, res) => {
 
     const messagesData = [
       {
-        _creator: usersWithIds[0]._id,
         content: "Hello, world!",
         user_id: usersWithIds[0]._id,
       },
       {
-        _creator: usersWithIds[0]._id,
         content: "Hello, world2!",
         user_id: usersWithIds[0]._id,
       },
       {
-        _creator: usersWithIds[0]._id,
         content: "Hello, world3!",
         user_id: usersWithIds[0]._id,
       },
       {
-        _creator: usersWithIds[1]._id,
         content: "Hi there!",
         user_id: usersWithIds[1]._id,
       },
