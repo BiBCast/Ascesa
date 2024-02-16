@@ -15,7 +15,7 @@ const ChannelType: GraphQLObjectType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
-    users: { type: UserType },
+    users: { type: new GraphQLList(UserType) },
   }),
 });
 
@@ -32,8 +32,8 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     user: { type: GraphQLString },
-    messages: { type: MessageType },
-    channel_ids: { type: ChannelType },
+    messages: { type: new GraphQLList(MessageType) },
+    channel_ids: { type: new GraphQLList(ChannelType) },
   }),
 });
 

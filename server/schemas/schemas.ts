@@ -3,8 +3,8 @@ import { Schema, Types, model } from "mongoose";
 const User = new Schema({
   _id: Schema.Types.ObjectId,
   user: String,
-  messages: { type: Types.ObjectId, ref: "Message" },
-  channel_ids: { type: Types.ObjectId, ref: "Channel" },
+  messages: [{ type: Types.ObjectId, ref: "Message" }],
+  channel_ids: [{ type: Types.ObjectId, ref: "Channel" }],
 });
 
 const message = new Schema({
@@ -16,7 +16,7 @@ const message = new Schema({
 const channel = new Schema({
   _id: Schema.Types.ObjectId,
   title: String,
-  users: { type: Types.ObjectId, ref: "User" },
+  users: [{ type: Types.ObjectId, ref: "User" }],
 });
 
 export const schemaUser = model("User", User);

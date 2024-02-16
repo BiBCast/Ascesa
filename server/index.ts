@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 const app: Express = express(); /* use route */
 import http from "http";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { Server } from "socket.io";
 import { createHandler } from "graphql-http/lib/use/express";
 import expressPlay from "graphql-playground-middleware-express";
@@ -43,52 +43,83 @@ app.get("/createMockData", async (req, res) => {
   try {
     // Generate mock data
     const usersData = [
-      { user: "Alice", messages: null, channel_ids: [] },
-      { user: "Bob", messages: null, channel_ids: [] },
+      { user: "Alice", messages: [], channel_ids: [] },
+      { user: "Bob", messages: [], channel_ids: [] },
       // Add more users as needed
     ];
 
-    const users = await schemaUser.insertMany(usersData);
-    const usersWithIds = await schemaUser.find({
-      user: { $in: users.map((user) => user.user) },
-    });
+    await schemaUser.insertMany(usersData);
+    const usersWithIds = await schemaUser.find({});
+    console.log("user");
+    console.log(usersWithIds);
 
     const messagesData = [
       {
         _creator: usersWithIds[0]._id,
         content: "Hello, world!",
-        user_id: usersWithIds[1]._id,
+        user_id: usersWithIds[0]._id,
+      },
+      {
+        _creator: usersWithIds[0]._id,
+        content: "Hello, world2!",
+        user_id: usersWithIds[0]._id,
+      },
+      {
+        _creator: usersWithIds[0]._id,
+        content: "Hello, world3!",
+        user_id: usersWithIds[0]._id,
       },
       {
         _creator: usersWithIds[1]._id,
         content: "Hi there!",
-        user_id: usersWithIds[0]._id,
+        user_id: usersWithIds[1]._id,
       },
       // Add more messages as needed
     ];
 
-    const messages = await schemaMessage.insertMany(messagesData);
-    const messagesWithIds = await schemaMessage.find({
-      _creator: { $in: messages.map((message) => message._creator) },
-    });
+    await schemaMessage.insertMany(messagesData);
+    const messagesWithIds = await schemaMessage.find({});
+    console.log("message");
+    console.log(messagesWithIds);
 
     const channelsData = [
       { title: "General", users: [usersWithIds[0]._id, usersWithIds[1]._id] },
+      { title: "Private", users: [usersWithIds[0]._id] },
       // Add more channels as needed
     ];
 
-    const channels = await schemaChannel.insertMany(channelsData);
-    const channelsWithIds = await schemaChannel.find({
-      title: { $in: channels.map((channel) => channel.title) },
-    });
+    await schemaChannel.insertMany(channelsData);
+    const channelsWithIds = await schemaChannel.find({});
+    console.log("channel");
+    console.log(channelsWithIds);
 
     // Update user data with message and channel references
+
+    console.log(messagesWithIds[0].user_id?.toString());
+    console.log(usersWithIds[0]._id?.toString());
+    console.log(
+      messagesWithIds[0].user_id?.toString() === usersWithIds[0]._id?.toString()
+    );
+    console.log(
+      channelsWithIds[0].users.filter((u) => {
+        return u._id?.toString() === usersWithIds[1]._id?.toString();
+      })
+    );
+
     await schemaUser.updateOne(
       { _id: usersWithIds[0]._id },
       {
         $set: {
-          messages: messagesWithIds[0]._id,
-          channel_ids: [channelsWithIds[0]._id, channelsWithIds[0]._id],
+          messages: messagesWithIds.filter((m) => {
+            return m.user_id?.toString() === usersWithIds[0]._id?.toString();
+          }),
+          channel_ids: channelsWithIds.filter((c) => {
+            return c.users.filter((u) => {
+              return u._id?.toString() === usersWithIds[0]._id?.toString();
+            }).length === 0
+              ? false
+              : true;
+          }),
         },
       }
     );
@@ -96,8 +127,16 @@ app.get("/createMockData", async (req, res) => {
       { _id: usersWithIds[1]._id },
       {
         $set: {
-          messages: messagesWithIds[1]._id,
-          channel_ids: [channelsWithIds[0]._id, channelsWithIds[0]._id],
+          messages: messagesWithIds.filter((m) => {
+            return m.user_id?.toString() === usersWithIds[1]._id?.toString();
+          }),
+          channel_ids: channelsWithIds.filter((c) => {
+            return c.users.filter((u) => {
+              return u._id?.toString() === usersWithIds[1]._id?.toString();
+            }).length === 0
+              ? false
+              : true;
+          }),
         },
       }
     );
