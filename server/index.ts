@@ -50,8 +50,6 @@ app.get("/createMockData", async (req, res) => {
 
     await schemaUser.insertMany(usersData);
     const usersWithIds = await schemaUser.find({});
-    console.log("user");
-    console.log(usersWithIds);
 
     const messagesData = [
       {
@@ -79,8 +77,6 @@ app.get("/createMockData", async (req, res) => {
 
     await schemaMessage.insertMany(messagesData);
     const messagesWithIds = await schemaMessage.find({});
-    console.log("message");
-    console.log(messagesWithIds);
 
     const channelsData = [
       { title: "General", users: [usersWithIds[0]._id, usersWithIds[1]._id] },
@@ -90,53 +86,37 @@ app.get("/createMockData", async (req, res) => {
 
     await schemaChannel.insertMany(channelsData);
     const channelsWithIds = await schemaChannel.find({});
-    console.log("channel");
-    console.log(channelsWithIds);
 
     // Update user data with message and channel references
-
-    console.log(messagesWithIds[0].user_id?.toString());
-    console.log(usersWithIds[0]._id?.toString());
-    console.log(
-      messagesWithIds[0].user_id?.toString() === usersWithIds[0]._id?.toString()
-    );
-    console.log(
-      channelsWithIds[0].users.filter((u) => {
-        return u._id?.toString() === usersWithIds[1]._id?.toString();
-      })
-    );
 
     await schemaUser.updateOne(
       { _id: usersWithIds[0]._id },
       {
         $set: {
-          messages: messagesWithIds.filter((m) => {
-            return m.user_id?.toString() === usersWithIds[0]._id?.toString();
-          }),
-          channel_ids: channelsWithIds.filter((c) => {
-            return c.users.filter((u) => {
-              return u._id?.toString() === usersWithIds[0]._id?.toString();
-            }).length === 0
-              ? false
-              : true;
-          }),
+          messages: messagesWithIds.filter(
+            (m) => m.user_id?.toString() === usersWithIds[0]._id?.toString()
+          ),
+          channel_ids: channelsWithIds.filter((c) =>
+            c.users.some(
+              (u) => u._id?.toString() === usersWithIds[0]._id?.toString()
+            )
+          ),
         },
       }
     );
+
     await schemaUser.updateOne(
       { _id: usersWithIds[1]._id },
       {
         $set: {
-          messages: messagesWithIds.filter((m) => {
-            return m.user_id?.toString() === usersWithIds[1]._id?.toString();
-          }),
-          channel_ids: channelsWithIds.filter((c) => {
-            return c.users.filter((u) => {
-              return u._id?.toString() === usersWithIds[1]._id?.toString();
-            }).length === 0
-              ? false
-              : true;
-          }),
+          messages: messagesWithIds.filter(
+            (m) => m.user_id?.toString() === usersWithIds[1]._id?.toString()
+          ),
+          channel_ids: channelsWithIds.filter((c) =>
+            c.users.some(
+              (u) => u._id?.toString() === usersWithIds[1]._id?.toString()
+            )
+          ),
         },
       }
     );
