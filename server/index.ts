@@ -43,30 +43,20 @@ app.get("/createMockData", async (req, res) => {
   try {
     // Generate mock data
     const usersData = [
-      { user: "Alice", messages: [], channel_ids: [] },
-      { user: "Bob", messages: [], channel_ids: [] },
+      { user: "Alice", messages: null, channel_ids: [] },
+      { user: "Bob", messages: null, channel_ids: [] },
       // Add more users as needed
     ];
 
-    await schemaUser.insertMany(usersData);
-
-    console.log("test users");
-    const usersWithIds = await schemaUser.find({});
+    const users = await schemaUser.insertMany(usersData);
+    const usersWithIds = await schemaUser.find({
+      user: { $in: users.map((user) => user.user) },
+    });
 
     const messagesData = [
       {
         _creator: usersWithIds[0]._id,
         content: "Hello, world!",
-        user_id: usersWithIds[1]._id,
-      },
-      {
-        _creator: usersWithIds[0]._id,
-        content: "Hello, 2!",
-        user_id: usersWithIds[1]._id,
-      },
-      {
-        _creator: usersWithIds[0]._id,
-        content: "Hello, 3!",
         user_id: usersWithIds[1]._id,
       },
       {
@@ -77,39 +67,28 @@ app.get("/createMockData", async (req, res) => {
       // Add more messages as needed
     ];
 
-    await schemaMessage.insertMany(messagesData);
-    console.log("test messages");
-    const messagesWithIds = await schemaMessage.find({});
+    const messages = await schemaMessage.insertMany(messagesData);
+    const messagesWithIds = await schemaMessage.find({
+      _creator: { $in: messages.map((message) => message._creator) },
+    });
 
     const channelsData = [
       { title: "General", users: [usersWithIds[0]._id, usersWithIds[1]._id] },
-      { title: "Private", users: [usersWithIds[0]._id] },
       // Add more channels as needed
     ];
 
-    await schemaChannel.insertMany(channelsData);
-    console.log("test chabnnel");
-    const channelsWithIds = await schemaChannel.find({});
+    const channels = await schemaChannel.insertMany(channelsData);
+    const channelsWithIds = await schemaChannel.find({
+      title: { $in: channels.map((channel) => channel.title) },
+    });
 
     // Update user data with message and channel references
-    console.log("test1");
-
     await schemaUser.updateOne(
       { _id: usersWithIds[0]._id },
       {
         $set: {
-          messages: messagesWithIds
-            .filter((mes) => {
-              mes.user_id?.toString() === usersWithIds[0]._id?.toString();
-            })
-            .map((m) => m._id),
-          channel_ids: channelsWithIds
-            .filter((ch) => {
-              ch.users.find(
-                (u) => u._id?.toString() === usersWithIds[0]._id?.toString()
-              );
-            })
-            .map((c) => c._id),
+          messages: messagesWithIds[0]._id,
+          channel_ids: [channelsWithIds[0]._id, channelsWithIds[0]._id],
         },
       }
     );
@@ -117,44 +96,11 @@ app.get("/createMockData", async (req, res) => {
       { _id: usersWithIds[1]._id },
       {
         $set: {
-          messages: messagesWithIds
-            .filter((mes) => {
-              mes.user_id?.toString() === usersWithIds[1]._id?.toString();
-            })
-            .map((m) => m._id),
-          channel_ids: channelsWithIds
-            .filter((ch) => {
-              ch.users.find(
-                (u) => u._id?.toString() === usersWithIds[0]._id?.toString()
-              );
-            })
-            .map((c) => c._id),
+          messages: messagesWithIds[1]._id,
+          channel_ids: [channelsWithIds[0]._id, channelsWithIds[0]._id],
         },
       }
     );
-    console.log(
-      messagesWithIds[0].user_id?.toString() == usersWithIds[1]._id?.toString()
-    );
-    console.log("EE\n");
-
-    console.log(messagesWithIds[0].user_id);
-    console.log(usersWithIds[1]._id);
-    console.log("hh\n");
-
-    console.log("test1");
-    console.log(
-      messagesWithIds
-        .filter((mes) => {
-          console.log(
-            mes.user_id?.toString() === usersWithIds[1]._id?.toString()
-          );
-        })
-        .map((m) => m._id)
-    );
-
-    console.log("test1");
-
-    console.log(usersWithIds[1]);
 
     res.send("Mock data created successfully.");
   } catch (error) {
