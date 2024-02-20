@@ -5,7 +5,7 @@ import {
   GraphQLID,
   GraphQLList,
 } from "graphql";
-import { schemaChannel, schemaUser } from "../schemas/schemas";
+import { schemaChannel, schemaMessage, schemaUser } from "../schemas/schemas";
 // Construct a schema, using GraphQL schema language
 //get all, get by id,
 // schema
@@ -24,6 +24,7 @@ const MessageType: GraphQLObjectType = new GraphQLObjectType({
   fields: () => ({
     content: { type: GraphQLString },
     user_id: { type: UserType },
+    channel_id: { type: ChannelType },
   }),
 });
 const UserType: GraphQLObjectType = new GraphQLObjectType({
@@ -94,22 +95,18 @@ const RootQuery = new GraphQLObjectType({
       },
     },
     ChannelMessages: {
-      type: ChannelType,
+      type: new GraphQLList(MessageType),
       args: { channel_id: { type: GraphQLID } },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
-        const channel = await schemaChannel
-          .findOne({ _id: args["channel_id"] })
-          .populate({
-            path: "users",
-            populate: {
-              path: "messages",
-              model: "Message",
-            },
-          });
-        console.log(channel);
+        const messages = await schemaMessage.find({
+          channel_id: args["channel_id"],
+        });
 
-        return channel;
+        //const a = channel?.map(function (el) { return el.name; })
+        console.log(messages);
+
+        return messages;
       },
     },
   },

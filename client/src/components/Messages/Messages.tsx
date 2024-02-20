@@ -5,13 +5,11 @@ import { ChatUser } from "../../cache";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
-
-// get all messages 
+// get all messages
 const GET_USERS = gql`
   query GetUsers {
-    Users {
-      user
-      message
+    ChannelMessages(channel_id: "65d4ac03abecc2562668856e") {
+      content
     }
   }
 `;
@@ -44,6 +42,7 @@ export default function Messages() {
   return (
     <>
       {loading && <div>{loading}</div>}
+      <div>{console.log(data)}</div>
       {error && <div>{error.message}</div>}
       {data && <div>data collected </div>}
       <div>User : {userPage}</div>

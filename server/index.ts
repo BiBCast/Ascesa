@@ -117,6 +117,42 @@ app.get("/createMockData", async (req, res) => {
       }
     );
 
+    await schemaMessage.updateOne(
+      { _id: messagesWithIds[0]._id },
+      {
+        $set: {
+          channel_id: channelsWithIds[0]._id,
+        },
+      }
+    );
+
+    await schemaMessage.updateOne(
+      { _id: messagesWithIds[1]._id },
+      {
+        $set: {
+          channel_id: channelsWithIds[0]._id,
+        },
+      }
+    );
+
+    await schemaMessage.updateOne(
+      { _id: messagesWithIds[2]._id },
+      {
+        $set: {
+          channel_id: channelsWithIds[0]._id,
+        },
+      }
+    );
+
+    await schemaMessage.updateOne(
+      { _id: messagesWithIds[3]._id },
+      {
+        $set: {
+          channel_id: channelsWithIds[1]._id,
+        },
+      }
+    );
+
     res.send("Mock data created successfully.");
   } catch (error) {
     console.error("Error creating mock data:", error);

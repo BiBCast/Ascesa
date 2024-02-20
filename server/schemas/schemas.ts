@@ -10,6 +10,7 @@ const User = new Schema({
 const message = new Schema({
   content: String,
   user_id: { type: Types.ObjectId, ref: "User" },
+  channel_id: { type: Types.ObjectId, ref: "Channel" },
 });
 
 const channel = new Schema({
