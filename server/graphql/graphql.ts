@@ -5,7 +5,7 @@ import {
   GraphQLID,
   GraphQLList,
 } from "graphql";
-import { schemaUser } from "../schemas/schemas";
+import { schemaChannel, schemaUser } from "../schemas/schemas";
 // Construct a schema, using GraphQL schema language
 //get all, get by id,
 // schema
@@ -91,6 +91,25 @@ const RootQuery = new GraphQLObjectType({
           .populate("messages")
           .populate("channel_ids");
         return user;
+      },
+    },
+    ChannelMessages: {
+      type: ChannelType,
+      args: { channel_id: { type: GraphQLID } },
+      async resolve(parent, args) {
+        //return a json {arg:value,...} and filter about the parameter of the json
+        const channel = await schemaChannel
+          .findOne({ _id: args["channel_id"] })
+          .populate({
+            path: "users",
+            populate: {
+              path: "messages",
+              model: "Message",
+            },
+          });
+        console.log(channel);
+
+        return channel;
       },
     },
   },

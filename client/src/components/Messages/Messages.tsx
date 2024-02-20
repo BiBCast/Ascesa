@@ -5,6 +5,8 @@ import { ChatUser } from "../../cache";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
+
+// get all messages 
 const GET_USERS = gql`
   query GetUsers {
     Users {
