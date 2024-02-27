@@ -8,8 +8,11 @@ import { gql, useQuery } from "@apollo/client";
 // get all messages
 const GET_MESSAGES_FOR_CHANNEL = gql`
   query GetUsers {
-    ChannelMessages(channel_id: "65d4ac03abecc2562668856e") {
+    ChannelMessages(channel_id: "65d4b1055631b38518d432de") {
       content
+      user_id {
+        user
+      }
     }
   }
 `;
@@ -21,7 +24,7 @@ export default function Messages() {
   /* const chatUser = useReactiveVar(chatUserItemsVar); */
   const userPage = location.state;
   const bottomEl = useRef<null | HTMLDivElement>(null);
-
+  //TODO type for data
   const { loading, data, error } = useQuery(GET_MESSAGES_FOR_CHANNEL, {
     //TODO to optimize the fetching
     fetchPolicy: "no-cache",
@@ -29,16 +32,19 @@ export default function Messages() {
   useEffect(() => {
     if (data) {
       /* chatUserItemsVar(data.Users); */
-      setChatMessages(data.Users);
+      setChatMessages(data.ChannelMessages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(data?.Users)]);
+  }, [JSON.stringify(data?.ChannelMessages)]);
 
   const scrollToBottom = () => {
     bottomEl?.current?.scrollIntoView();
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [JSON.stringify(chatMessages)]);
+  if (data) {
+    console.log(data);
+  }
   return (
     <>
       {loading && <div>{loading}</div>}
