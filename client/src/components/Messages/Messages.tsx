@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 
 // get all messages
-const GET_USERS = gql`
+const GET_MESSAGES_FOR_CHANNEL = gql`
   query GetUsers {
     ChannelMessages(channel_id: "65d4ac03abecc2562668856e") {
       content
@@ -22,7 +22,7 @@ export default function Messages() {
   const userPage = location.state;
   const bottomEl = useRef<null | HTMLDivElement>(null);
 
-  const { loading, data, error } = useQuery(GET_USERS, {
+  const { loading, data, error } = useQuery(GET_MESSAGES_FOR_CHANNEL, {
     //TODO to optimize the fetching
     fetchPolicy: "no-cache",
   });
@@ -42,7 +42,6 @@ export default function Messages() {
   return (
     <>
       {loading && <div>{loading}</div>}
-      <div>{console.log(data)}</div>
       {error && <div>{error.message}</div>}
       {data && <div>data collected </div>}
       <div>User : {userPage}</div>

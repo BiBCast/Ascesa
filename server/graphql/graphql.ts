@@ -99,13 +99,11 @@ const RootQuery = new GraphQLObjectType({
       args: { channel_id: { type: GraphQLID } },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
-        const messages = await schemaMessage.find({
-          channel_id: args["channel_id"],
-        });
-
-        //const a = channel?.map(function (el) { return el.name; })
-        console.log(messages);
-
+        const messages = await schemaMessage
+          .find({
+            channel_id: args["channel_id"],
+          })
+          .populate("user_id");
         return messages;
       },
     },
