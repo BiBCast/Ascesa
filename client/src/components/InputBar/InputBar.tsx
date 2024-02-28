@@ -10,33 +10,33 @@ import "./index.css";
 import { io } from "socket.io-client";
 import SendImg from "./../../assets/send-button.png";
 import { useLocation } from "react-router-dom";
-import { ChatUser } from "../../cache";
+import { MessageType } from "../../cache";
 import useAutosizeTextArea from "../../useAutoSizeTextArea";
 const socket = io("http://localhost:3000/");
 
 export default function InputBar({
   setChatMessages,
 }: {
-  setChatMessages: Dispatch<SetStateAction<ChatUser[]>>;
+  setChatMessages: Dispatch<SetStateAction<MessageType[]>>;
 }) {
-  const [receivedMsg, setReceivedMsg] = useState<ChatUser>();
+  const [receivedMsg, setReceivedMsg] = useState<MessageType>();
   const [input, setInput] = useState("");
   const location = useLocation();
-  const user = location.state;
+  const user: string = location.state;
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useAutosizeTextArea(textAreaRef.current, input);
 
-  socket.on("chat message", async (chatUser: ChatUser) => {
+  socket.on("chat message", async (chatUser: MessageType) => {
     setReceivedMsg(chatUser);
   });
 
   /* we send a request of added message to the backend , the back end send to every one the updated message , so we dont have to worry about the update of the chat because every chat is updated at the same time  */
   useEffect(() => {
     if (!receivedMsg) return;
-    const user = receivedMsg.user;
-    const message = receivedMsg.message;
+    const user = receivedMsg.user_id.user;
+    const message = receivedMsg.content;
 
     if (user.trim() === "") {
       console.error("User null");
@@ -53,7 +53,7 @@ export default function InputBar({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receivedMsg]);
-
+  //TODO unite the case
   function handleInput(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key !== "Enter") return;
 
@@ -67,10 +67,13 @@ export default function InputBar({
     }
     if (input.trim() === "") return;
 
-    socket.emit("chat message", {
-      user: user,
-      message: input,
-    } as ChatUser);
+    const chatuser: MessageType = {
+      user_id: { user: user },
+      content: input,
+      channel_id: "65d4b1055631b38518d432de",
+    };
+
+    socket.emit("chat message", chatuser);
 
     setInput("");
   }
@@ -80,11 +83,13 @@ export default function InputBar({
       console.error("the state(user) is not valid");
       return;
     }
+    const chatuser: MessageType = {
+      user_id: { user: user },
+      content: input,
+      channel_id: "65d4b1055631b38518d432de",
+    };
 
-    socket.emit("chat message", {
-      user: user,
-      message: input,
-    } as ChatUser);
+    socket.emit("chat message", chatuser);
     setInput("");
   }
 

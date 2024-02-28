@@ -1,11 +1,12 @@
 //not utilizzated
 
 import { InMemoryCache, gql, makeVar } from "@apollo/client";
-export type ChatUser = {
+export type MessageType = {
   user_id: {
     user: string;
   };
   content: string;
+  channel_id: string;
 };
 
 export const GET_CHAT_USERS = gql`
@@ -13,7 +14,7 @@ export const GET_CHAT_USERS = gql`
     chatUserItems @client
   }
 `;
-export const chatUserItemsVar = makeVar<ChatUser[]>([]);
+export const chatUserItemsVar = makeVar<MessageType[]>([]);
 
 export const cache = new InMemoryCache({
   typePolicies: {

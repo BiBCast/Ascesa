@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
-import { ChatUser } from "../../cache";
 import { Link, useLocation } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
-
+import { MessageType } from "../../cache";
+export const CHANNEL_ID = "65d4b1055631b38518d432de";
 // get all messages
 const GET_MESSAGES_FOR_CHANNEL = gql`
   query GetUsers {
@@ -19,7 +19,7 @@ const GET_MESSAGES_FOR_CHANNEL = gql`
 
 export default function Messages() {
   const location = useLocation();
-  const [chatMessages, setChatMessages] = useState<ChatUser[]>([]);
+  const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
   // i don't know why i should put it here but it works
   /* const chatUser = useReactiveVar(chatUserItemsVar); */
   const userPage = location.state;
@@ -60,23 +60,25 @@ export default function Messages() {
         Login
       </Link>
       <div className="container">
-        {chatMessages?.map(({ content, user_id }: ChatUser, index: number) => (
-          <div
-            className={
-              userPage !== user_id.user ? "chatboxReceived" : "chatboxSent"
-            }
-            key={index}
-          >
-            <div className="baloon">
-              <div>
-                <p className="user">{user_id.user}</p>
-              </div>
-              <div>
-                <p className="message">{content}</p>
+        {chatMessages?.map(
+          ({ content, user_id }: MessageType, index: number) => (
+            <div
+              className={
+                userPage !== user_id.user ? "chatboxReceived" : "chatboxSent"
+              }
+              key={index}
+            >
+              <div className="baloon">
+                <div>
+                  <p className="user">{user_id.user}</p>
+                </div>
+                <div>
+                  <p className="message">{content}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          )
+        )}
         <div ref={bottomEl}></div>
       </div>
       <InputBar setChatMessages={setChatMessages} />

@@ -14,9 +14,13 @@ mongoose.connect(
 );
 const db = mongoose.connection;
 //TODO make dynamic from graphql
-export type ChatUser = {
-  user: string;
-  message: string;
+export const CHANNEL_ID = "65d4b1055631b38518d432de";
+export type MessageType = {
+  user_id: {
+    user: string;
+  };
+  content: string;
+  channel_id: string;
 };
 
 async function deleteAll() {
@@ -172,9 +176,10 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
   // user;message
-  socket.on("chat message", async (chatUser: ChatUser) => {
-    const user = chatUser.user;
-    const message = chatUser.message;
+  socket.on("chat message", async ({ content, user_id }: MessageType) => {
+    const user = user_id.user;
+    const message = content;
+
     if (user.trim() === "") {
       console.error("User null");
       return;
@@ -184,7 +189,13 @@ io.on("connection", (socket) => {
       return;
     }
 
-    /* await schemaUser.create(chatUser); */
+    const chatUser: MessageType = {
+      channel_id: CHANNEL_ID,
+      content: message,
+      user_id: { user: user },
+    };
+
+    await schemaMessage.create(chatUser);
     io.emit("chat message", chatUser);
   });
 });
