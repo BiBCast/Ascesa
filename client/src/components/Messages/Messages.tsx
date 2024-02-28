@@ -42,8 +42,8 @@ export default function Messages() {
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [JSON.stringify(chatMessages)]);
-  if (data) {
-    console.log(data);
+  if (chatMessages) {
+    console.log(chatMessages);
   }
   return (
     <>
@@ -60,19 +60,19 @@ export default function Messages() {
         Login
       </Link>
       <div className="container">
-        {chatMessages?.map((user: ChatUser, index: number) => (
+        {chatMessages?.map(({ content, user_id }: ChatUser, index: number) => (
           <div
             className={
-              userPage !== user.user ? "chatboxReceived" : "chatboxSent"
+              userPage !== user_id.user ? "chatboxReceived" : "chatboxSent"
             }
             key={index}
           >
             <div className="baloon">
               <div>
-                <p className="user">{user.user}</p>
+                <p className="user">{user_id.user}</p>
               </div>
               <div>
-                <p className="message">{user.message}</p>
+                <p className="message">{content}</p>
               </div>
             </div>
           </div>
