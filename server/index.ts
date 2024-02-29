@@ -20,7 +20,9 @@ export type MessageType = {
     user: string;
   };
   content: string;
-  channel_id: string;
+  channel_id: {
+    title: string;
+  };
 };
 
 async function deleteAll() {
@@ -178,25 +180,33 @@ io.on("connection", (socket) => {
   // user;message
   socket.on("chat message", async ({ content, user_id }: MessageType) => {
     const user = user_id.user;
-    const message = content;
-
     if (user.trim() === "") {
       console.error("User null");
       return;
     }
-    if (message.trim() === "") {
+    if (content.trim() === "") {
       console.error("Message null");
       return;
     }
 
-    const chatUser: MessageType = {
+    const dbUser = await schemaUser.findOne({ user: user });
+    //TODO understand type mongo db
+    if (!dbUser) {
+      console.log("user not exist");
+      return;
+    }
+
+    const message = {
       channel_id: CHANNEL_ID,
-      content: message,
-      user_id: { user: user },
+      content: content,
+      user_id: dbUser._id,
     };
 
-    await schemaMessage.create(chatUser);
-    io.emit("chat message", chatUser);
+    const createdUser = await (
+      await schemaMessage.create(message)
+    ).populate("user_id");
+
+    io.emit("chat message", createdUser);
   });
 });
 //start db and server
