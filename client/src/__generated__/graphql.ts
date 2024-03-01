@@ -15,20 +15,48 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
-export type Query = {
-  __typename?: 'Query';
-  id?: Maybe<Scalars['ID']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  user?: Maybe<Scalars['String']['output']>;
-};
-
 export type RootqueryType = {
   __typename?: 'RootqueryType';
-  User?: Maybe<Query>;
-  Users?: Maybe<Array<Maybe<Query>>>;
+  Channel?: Maybe<ChannelType>;
+  ChannelMessages?: Maybe<Array<Maybe<MessageType>>>;
+  Channels?: Maybe<Array<Maybe<ChannelType>>>;
+  User?: Maybe<UserType>;
+  Users?: Maybe<Array<Maybe<UserType>>>;
+};
+
+
+export type RootqueryTypeChannelArgs = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type RootqueryTypeChannelMessagesArgs = {
+  channel_id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
 export type RootqueryTypeUserArgs = {
   user?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ChannelType = {
+  __typename?: 'channelType';
+  id?: Maybe<Scalars['ID']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+  users?: Maybe<Array<Maybe<UserType>>>;
+};
+
+export type MessageType = {
+  __typename?: 'messageType';
+  channel_id?: Maybe<ChannelType>;
+  content?: Maybe<Scalars['String']['output']>;
+  user_id?: Maybe<UserType>;
+};
+
+export type UserType = {
+  __typename?: 'userType';
+  channel_ids?: Maybe<Array<Maybe<ChannelType>>>;
+  id?: Maybe<Scalars['ID']['output']>;
+  messages?: Maybe<Array<Maybe<MessageType>>>;
+  user?: Maybe<Scalars['String']['output']>;
 };

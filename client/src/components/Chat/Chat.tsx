@@ -1,26 +1,11 @@
 import "./index.css";
 import Messages from "../Messages/Messages";
-export function Chat() {
+export function Chat({ selectedChannelId }: { selectedChannelId: string }) {
   return (
     <>
       <section className="Chat">
-        <Messages />
+        <Messages selectedChannelId={selectedChannelId} />
       </section>
     </>
   );
-}
-
-//structure components
-{
-  /* <Channels>
-    <Channel>
-      <Chat>
-        <Header />
-        <Messages > 
-          <InputBar />
-        </Messages>
-      </Chat>
-    </Channel>
-  </Channels>;
-   */
 }

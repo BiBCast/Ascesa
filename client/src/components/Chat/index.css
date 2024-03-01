@@ -3,3 +3,11 @@
   flex-direction: column;
   height: 100%;
 }
+
+/* 
+ Use box-sizing so that element's outerwidth will match width property 
+  box-sizing: border-box;
+
+  Allow box to grow and shrink, and ensure they are all equally sized 
+  add also to the siblings
+  flex: 1 1 auto; */

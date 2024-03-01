@@ -1,18 +1,21 @@
 import { Schema, Types, model } from "mongoose";
 // [] one 2 many
 const User = new Schema({
+  _id: { type: Types.ObjectId },
   user: String,
   messages: [{ type: Types.ObjectId, ref: "Message" }],
   channel_ids: [{ type: Types.ObjectId, ref: "Channel" }],
 });
 
 const message = new Schema({
+  _id: { type: Types.ObjectId },
   content: String,
   user_id: { type: Types.ObjectId, ref: "User" },
   channel_id: { type: Types.ObjectId, ref: "Channel" },
 });
 
 const channel = new Schema({
+  _id: { type: Types.ObjectId },
   title: String,
   users: [{ type: Types.ObjectId, ref: "User" }],
 });

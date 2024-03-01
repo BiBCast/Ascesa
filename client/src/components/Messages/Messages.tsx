@@ -2,22 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
 import { Link, useLocation } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
-import { MessageType } from "../../cache";
-export const CHANNEL_ID = "65d4b1055631b38518d432de";
-// get all messages
-const GET_MESSAGES_FOR_CHANNEL = gql`
-  query GetUsers {
-    ChannelMessages(channel_id: "65d4b1055631b38518d432de") {
-      content
-      user_id {
-        user
-      }
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
 
-export default function Messages() {
+import { GET_MESSAGES_FOR_CHANNEL } from "../../query";
+import { MessageType } from "../../types";
+// get all messages
+
+export default function Messages({
+  selectedChannelId,
+}: {
+  selectedChannelId: string;
+}) {
   const location = useLocation();
   const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
   // i don't know why i should put it here but it works
@@ -25,11 +20,16 @@ export default function Messages() {
   const userPage = location.state;
   const bottomEl = useRef<null | HTMLDivElement>(null);
   //TODO type for data
-  const { loading, data, error } = useQuery(GET_MESSAGES_FOR_CHANNEL, {
-    //TODO to optimize the fetching
-    fetchPolicy: "no-cache",
-  });
+  const { loading, data, error } = useQuery(
+    GET_MESSAGES_FOR_CHANNEL(selectedChannelId),
+    {
+      //TODO to optimize the fetching
+      fetchPolicy: "no-cache",
+    }
+  );
   useEffect(() => {
+    console.log(GET_MESSAGES_FOR_CHANNEL(selectedChannelId));
+
     if (data) {
       /* chatUserItemsVar(data.Users); */
       setChatMessages(data.ChannelMessages);

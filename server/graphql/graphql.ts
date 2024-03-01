@@ -107,6 +107,26 @@ const RootQuery = new GraphQLObjectType({
         return messages;
       },
     },
+    Channels: {
+      type: new GraphQLList(ChannelType),
+      args: {},
+      async resolve() {
+        //return a json {arg:value,...} and filter about the parameter of the json
+        const channels = await schemaChannel.find({});
+        return channels;
+      },
+    },
+    Channel: {
+      type: ChannelType,
+      args: { id: { type: GraphQLString } },
+      async resolve(parent, args) {
+        //return a json {arg:value,...} and filter about the parameter of the json
+        console.log(args["id"]);
+
+        const channel = await schemaChannel.findOne({ _id: args["id"] });
+        return channel;
+      },
+    },
   },
 });
 
