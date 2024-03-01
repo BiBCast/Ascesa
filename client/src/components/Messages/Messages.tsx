@@ -13,13 +13,10 @@ export default function Messages({
 }: {
   selectedChannelId: string;
 }) {
-  const location = useLocation();
   const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
-  // i don't know why i should put it here but it works
-  /* const chatUser = useReactiveVar(chatUserItemsVar); */
+  const location = useLocation();
   const userPage = location.state;
   const bottomEl = useRef<null | HTMLDivElement>(null);
-  //TODO type for data
   const { loading, data, error } = useQuery(
     GET_MESSAGES_FOR_CHANNEL(selectedChannelId),
     {
@@ -27,6 +24,11 @@ export default function Messages({
       fetchPolicy: "no-cache",
     }
   );
+  const scrollToBottom = () => {
+    bottomEl?.current?.scrollIntoView();
+  };
+  //TODO type for data
+
   useEffect(() => {
     console.log(GET_MESSAGES_FOR_CHANNEL(selectedChannelId));
 
@@ -37,9 +39,6 @@ export default function Messages({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.ChannelMessages)]);
 
-  const scrollToBottom = () => {
-    bottomEl?.current?.scrollIntoView();
-  };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [JSON.stringify(chatMessages)]);
   if (chatMessages) {
@@ -81,7 +80,7 @@ export default function Messages({
         )}
         <div ref={bottomEl}></div>
       </div>
-      <InputBar setChatMessages={setChatMessages} />
+      <InputBar selectedChannelId={selectedChannelId} setChatMessages={setChatMessages} />
     </>
   );
 }

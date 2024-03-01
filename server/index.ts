@@ -14,7 +14,7 @@ mongoose.connect(
 );
 const db = mongoose.connection;
 //TODO make dynamic from graphql
-export const CHANNEL_ID = "65d4b1055631b38518d432de";
+
 export type MessageType = {
   user_id: {
     user: string;
@@ -178,36 +178,39 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
   // user;message
-  socket.on("chat message", async ({ content, user_id }: MessageType) => {
-    const user = user_id.user;
-    if (user.trim() === "") {
-      console.error("User null");
-      return;
+  socket.on(
+    "chat message",
+    async ({ content, user_id, channel_id }: MessageType) => {
+      const user = user_id.user;
+      if (user.trim() === "") {
+        console.error("User null");
+        return;
+      }
+      if (content.trim() === "") {
+        console.error("Message null");
+        return;
+      }
+
+      const dbUser = await schemaUser.findOne({ user: user });
+      //TODO understand type mongo db
+      if (!dbUser) {
+        console.log("user not exist");
+        return;
+      }
+
+      const message = {
+        channel_id: channel_id,
+        content: content,
+        user_id: dbUser._id,
+      };
+
+      const createdUser = await (
+        await schemaMessage.create(message)
+      ).populate("user_id");
+
+      io.emit("chat message", createdUser);
     }
-    if (content.trim() === "") {
-      console.error("Message null");
-      return;
-    }
-
-    const dbUser = await schemaUser.findOne({ user: user });
-    //TODO understand type mongo db
-    if (!dbUser) {
-      console.log("user not exist");
-      return;
-    }
-
-    const message = {
-      channel_id: CHANNEL_ID,
-      content: content,
-      user_id: dbUser._id,
-    };
-
-    const createdUser = await (
-      await schemaMessage.create(message)
-    ).populate("user_id");
-
-    io.emit("chat message", createdUser);
-  });
+  );
 });
 //start db and server
 db.on("error", (error) => {

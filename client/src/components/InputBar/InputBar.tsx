@@ -15,15 +15,16 @@ import useAutosizeTextArea from "../../useAutoSizeTextArea";
 const socket = io("http://localhost:3000/");
 
 export default function InputBar({
+  selectedChannelId,
   setChatMessages,
 }: {
+  selectedChannelId: string;
   setChatMessages: Dispatch<SetStateAction<MessageType[]>>;
 }) {
   const [receivedMsg, setReceivedMsg] = useState<MessageType>();
   const [input, setInput] = useState("");
   const location = useLocation();
   const user: string = location.state;
-
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useAutosizeTextArea(textAreaRef.current, input);
@@ -50,12 +51,24 @@ export default function InputBar({
     }
 
     /* chatUserItemsVar([...chatUserItemsVar(), receivedMsg]); */
-    setChatMessages((prev) => {
+    setChatMessages((prev: MessageType[]) => {
       return [...prev, receivedMsg];
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [receivedMsg]);
   //TODO unite the case
+  function sendMessage() {
+    console.log(user);
+
+    const chatuser: MessageType = {
+      user_id: { user: user },
+      content: input,
+      channel_id: selectedChannelId,
+    };
+
+    socket.emit("chat message", chatuser);
+    setInput("");
+  }
   function handleInput(e: KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key !== "Enter") return;
 
@@ -68,31 +81,16 @@ export default function InputBar({
       return;
     }
     if (input.trim() === "") return;
-
-    const chatuser: MessageType = {
-      user_id: { user: user },
-      content: input,
-      channel_id: "65d4b1055631b38518d432de",
-    };
-
-    socket.emit("chat message", chatuser);
-
-    setInput("");
+    sendMessage();
   }
+
   function handleInputSendbutton() {
     if (input === "") return;
     if (!user && typeof user != "string") {
       console.error("the state(user) is not valid");
       return;
     }
-    const chatuser: MessageType = {
-      user_id: { user: user },
-      content: input,
-      channel_id: "65d4b1055631b38518d432de",
-    };
-
-    socket.emit("chat message", chatuser);
-    setInput("");
+    sendMessage();
   }
 
   return (
