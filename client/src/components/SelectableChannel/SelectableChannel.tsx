@@ -1,12 +1,13 @@
 import { Dispatch } from "react";
 import "./index.css";
+import LastMessage from "../LastMessage/LastMessage";
 export function SelectableChannel({
   title,
   channelId,
   handleClickChannel,
 }: {
   title: string;
-  channelId: string | undefined;
+  channelId: string;
   setSelectedChannelId: Dispatch<string>;
   handleClickChannel: (channelId: string | undefined) => void;
 }) {
@@ -15,19 +16,22 @@ export function SelectableChannel({
     */
 
   return (
+    
     <a
       className="selectable_channel"
       tabIndex={0}
       onClick={() => handleClickChannel(channelId)}
     >
       <div className="image">Image</div>
-      <div>id = {channelId}</div>
+
       <div className="container">
         <div className="title">
           <p>{title}</p>
         </div>
         <div className="message">
-          <p>Last message</p>
+          <div>
+            <LastMessage channelId={channelId} />
+          </div>
         </div>
       </div>
     </a>

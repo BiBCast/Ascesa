@@ -4,6 +4,7 @@ import {
   GraphQLString,
   GraphQLID,
   GraphQLList,
+  GraphQLBoolean,
 } from "graphql";
 import { schemaChannel, schemaMessage, schemaUser } from "../schemas/schemas";
 // Construct a schema, using GraphQL schema language
@@ -84,7 +85,7 @@ const RootQuery = new GraphQLObjectType({
     },
     User: {
       type: UserType,
-      args: { user: { type: GraphQLString } },
+      args: { user: { type: GraphQLString }! },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
         const user = await schemaUser
@@ -96,17 +97,32 @@ const RootQuery = new GraphQLObjectType({
     },
     ChannelMessages: {
       type: new GraphQLList(MessageType),
-      args: { channel_id: { type: GraphQLID } },
+      args: {
+        channel_id: { type: GraphQLID }!,
+        getLastMessage: { type: GraphQLBoolean },
+      },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
+        if (args["getLastMessage"]) {
+          const messages = await schemaMessage
+            .find({
+              channel_id: args["channel_id"],
+            })
+            .sort([["_id", -1]])
+            .limit(1)
+            .populate("user_id");
+          return messages;
+        }
         const messages = await schemaMessage
           .find({
             channel_id: args["channel_id"],
           })
           .populate("user_id");
+
         return messages;
       },
     },
+
     Channels: {
       type: new GraphQLList(ChannelType),
       args: {},
@@ -118,7 +134,7 @@ const RootQuery = new GraphQLObjectType({
     },
     Channel: {
       type: ChannelType,
-      args: { id: { type: GraphQLString } },
+      args: { id: { type: GraphQLString }! },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
 

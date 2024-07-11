@@ -1,9 +1,15 @@
 import { gql } from "@apollo/client";
 
-export const GET_MESSAGES_FOR_CHANNEL = (channelId: string) => {
+export const GET_MESSAGES_FOR_CHANNEL = ({
+  channelId,
+  getLastMessage = false,
+}: {
+  channelId: string;
+  getLastMessage?: boolean;
+}) => {
   return gql`
     query GetMessages {
-      ChannelMessages(channel_id: "${channelId}") {
+      ChannelMessages(channel_id: "${channelId}", getLastMessage: ${getLastMessage}) {
         content
         user_id {
           user

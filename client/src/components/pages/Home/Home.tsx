@@ -4,10 +4,9 @@ import { Sidebar } from "../../Sidebar/Sidebar";
 import { useState } from "react";
 
 export function Home() {
-  const [selectedChannelId, setSelectedChannelId] = useState<string>(
-    "65e4afeffe0afb859f0ca203"
-  );
-  const [isOpenSideBar, setIsOpenSideBar] = useState<boolean>(false);
+  const [selectedChannelId, setSelectedChannelId] = useState<string>();
+  const [isOpenSideBar, setIsOpenSideBar] = useState<boolean>(true);
+
   //TODO do animation with vanishment effect for the chat
   function handleSideBar() {
     setIsOpenSideBar((e) => {

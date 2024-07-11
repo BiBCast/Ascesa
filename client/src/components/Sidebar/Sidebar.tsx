@@ -4,6 +4,7 @@ import "./index.css";
 import { GET_ALL_CHANNEL } from "../../query";
 import { Dispatch, useEffect, useState } from "react";
 import { ChannelType } from "../../types";
+import { Link, useLocation } from "react-router-dom";
 
 export function Sidebar({
   setSelectedChannelId,
@@ -13,6 +14,8 @@ export function Sidebar({
   handleClickChannel: (channelId: string | undefined) => void;
 }) {
   const [channels, setChannels] = useState<ChannelType[]>();
+  const location = useLocation();
+  const userPage = location.state;
   //TODO type for data
   const { loading, data, error } = useQuery(GET_ALL_CHANNEL, {
     //TODO to optimize the fetching
@@ -26,11 +29,24 @@ export function Sidebar({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.Channels)]);
+  //TODO add image for the channels with external storage
   return (
     <>
-      {loading && <div>{loading}</div>}
+      {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
-      {data && <div>data collected </div>}
+      {data && <>{console.log("data collected")} </>}
+      <div>
+        User : {userPage}
+        <br />
+        <Link
+          to={{
+            pathname: "/",
+          }}
+          state={userPage}
+        >
+          Login
+        </Link>
+      </div>
       <div className="sidebar">
         {channels?.map(({ title, id }: ChannelType, index: number) => (
           //pass the entire channel ?

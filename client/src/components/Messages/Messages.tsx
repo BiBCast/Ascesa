@@ -1,11 +1,11 @@
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
-import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import Arrow from "../../assets/double-left-50.png";
 import { GET_MESSAGES_FOR_CHANNEL } from "../../query";
 import { MessageType } from "../../types";
+import { useLocation } from "react-router-dom";
 // get all messages
 
 export default function Messages({
@@ -16,11 +16,12 @@ export default function Messages({
   handleSideBar: MouseEventHandler<HTMLElement>;
 }) {
   const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
+
+  const bottomEl = useRef<null | HTMLDivElement>(null);
   const location = useLocation();
   const userPage = location.state;
-  const bottomEl = useRef<null | HTMLDivElement>(null);
   const { loading, data, error } = useQuery(
-    GET_MESSAGES_FOR_CHANNEL(selectedChannelId),
+    GET_MESSAGES_FOR_CHANNEL({ channelId: selectedChannelId }),
     {
       //TODO to optimize the fetching
       fetchPolicy: "no-cache",
@@ -46,24 +47,12 @@ export default function Messages({
     <>
       {/* TODO  do loading screen*/}
       {loading && <div>loading</div>}
-      {error && <>{console.error(error.message)}</>}
+      {error && <div>{error.message}</div>}
       {data && <>{console.log("data collected")} </>}
 
       <div className="container">
         <section className="topBar">
           <img src={Arrow} alt="fireSpot" onClick={handleSideBar} />
-          <div>
-            User : {userPage}
-            <br />
-            <Link
-              to={{
-                pathname: "/",
-              }}
-              state={userPage}
-            >
-              Login
-            </Link>
-          </div>
         </section>
         {chatMessages?.map(
           ({ content, user_id }: MessageType, index: number) => (
