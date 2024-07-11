@@ -121,7 +121,6 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLString } },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
-        console.log(args["id"]);
 
         const channel = await schemaChannel.findOne({ _id: args["id"] });
         return channel;

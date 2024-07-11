@@ -7,8 +7,10 @@ import { ChannelType } from "../../types";
 
 export function Sidebar({
   setSelectedChannelId,
+  handleClickChannel,
 }: {
   setSelectedChannelId: Dispatch<string>;
+  handleClickChannel: (channelId: string | undefined) => void;
 }) {
   const [channels, setChannels] = useState<ChannelType[]>();
   //TODO type for data
@@ -17,11 +19,8 @@ export function Sidebar({
     fetchPolicy: "no-cache",
   });
   useEffect(() => {
-    console.log(data);
-
     if (data) {
       /* chatUserItemsVar(data.Users); */
-      console.log(data);
 
       setChannels(data.Channels);
     }
@@ -35,7 +34,13 @@ export function Sidebar({
       <div className="sidebar">
         {channels?.map(({ title, id }: ChannelType, index: number) => (
           //pass the entire channel ?
-          <SelectableChannel key={index} title={title} channelId={id} setSelectedChannelId={setSelectedChannelId}/>
+          <SelectableChannel
+            key={index}
+            title={title}
+            channelId={id}
+            setSelectedChannelId={setSelectedChannelId}
+            handleClickChannel={handleClickChannel}
+          />
         ))}
       </div>
     </>

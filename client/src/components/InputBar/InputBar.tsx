@@ -36,7 +36,6 @@ export default function InputBar({
   /* we send a request of added message to the backend , the back end send to every one the updated message , so we dont have to worry about the update of the chat because every chat is updated at the same time  */
   useEffect(() => {
     if (!receivedMsg) return;
-    console.log(receivedMsg);
 
     const user = receivedMsg.user_id.user;
     const message = receivedMsg.content;
@@ -58,8 +57,6 @@ export default function InputBar({
   }, [receivedMsg]);
   //TODO unite the case
   function sendMessage() {
-    console.log(user);
-
     const chatuser: MessageType = {
       user_id: { user: user },
       content: input,

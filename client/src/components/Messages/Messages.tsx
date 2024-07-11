@@ -1,17 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import "./index.css";
 import InputBar from "../InputBar/InputBar";
 import { Link, useLocation } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-
+import Arrow from "../../assets/double-left-50.png";
 import { GET_MESSAGES_FOR_CHANNEL } from "../../query";
 import { MessageType } from "../../types";
 // get all messages
 
 export default function Messages({
   selectedChannelId,
+  handleSideBar,
 }: {
   selectedChannelId: string;
+  handleSideBar: MouseEventHandler<HTMLElement>;
 }) {
   const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
   const location = useLocation();
@@ -30,8 +32,6 @@ export default function Messages({
   //TODO type for data
 
   useEffect(() => {
-    console.log(GET_MESSAGES_FOR_CHANNEL(selectedChannelId));
-
     if (data) {
       /* chatUserItemsVar(data.Users); */
       setChatMessages(data.ChannelMessages);
@@ -41,24 +41,30 @@ export default function Messages({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [JSON.stringify(chatMessages)]);
-  if (chatMessages) {
-    console.log(chatMessages);
-  }
+
   return (
     <>
-      {loading && <div>{loading}</div>}
-      {error && <div>{error.message}</div>}
-      {data && <div>data collected </div>}
-      <div>User : {userPage}</div>
-      <Link
-        to={{
-          pathname: "/",
-        }}
-        state={userPage}
-      >
-        Login
-      </Link>
+      {/* TODO  do loading screen*/}
+      {loading && <div>loading</div>}
+      {error && <>{console.error(error.message)}</>}
+      {data && <>{console.log("data collected")} </>}
+
       <div className="container">
+        <section className="topBar">
+          <img src={Arrow} alt="fireSpot" onClick={handleSideBar} />
+          <div>
+            User : {userPage}
+            <br />
+            <Link
+              to={{
+                pathname: "/",
+              }}
+              state={userPage}
+            >
+              Login
+            </Link>
+          </div>
+        </section>
         {chatMessages?.map(
           ({ content, user_id }: MessageType, index: number) => (
             <div
@@ -80,7 +86,10 @@ export default function Messages({
         )}
         <div ref={bottomEl}></div>
       </div>
-      <InputBar selectedChannelId={selectedChannelId} setChatMessages={setChatMessages} />
+      <InputBar
+        selectedChannelId={selectedChannelId}
+        setChatMessages={setChatMessages}
+      />
     </>
   );
 }

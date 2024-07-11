@@ -3,20 +3,23 @@ import "./index.css";
 export function SelectableChannel({
   title,
   channelId,
-  setSelectedChannelId,
+  handleClickChannel,
 }: {
   title: string;
   channelId: string | undefined;
   setSelectedChannelId: Dispatch<string>;
+  handleClickChannel: (channelId: string | undefined) => void;
 }) {
   /* state received from the father that indicate the id 
     than pass the id to te message where he get all messages
     */
-  function handleClick() {
-    if (channelId) setSelectedChannelId(channelId);
-  }
+
   return (
-    <a className="selectable_channel" tabIndex={0} onClick={handleClick}>
+    <a
+      className="selectable_channel"
+      tabIndex={0}
+      onClick={() => handleClickChannel(channelId)}
+    >
       <div className="image">Image</div>
       <div>id = {channelId}</div>
       <div className="container">
