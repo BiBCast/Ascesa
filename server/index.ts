@@ -25,6 +25,14 @@ export type MessageType = {
   };
 };
 
+export type UserType = {
+  id?: string;
+  user: string;
+  password: string;
+  messages: string[];
+  channel_ids: string[];
+};
+
 async function deleteAll() {
   await schemaUser.deleteMany({});
   await schemaChannel.deleteMany({});
@@ -48,9 +56,9 @@ app.get("/createMockData", async (req, res) => {
   await deleteAll();
   try {
     // Generate mock data
-    const usersData = [
-      { user: "Alice", messages: [], channel_ids: [] },
-      { user: "Bob", messages: [], channel_ids: [] },
+    const usersData: UserType[] = [
+      { user: "Alice", password: "Alice", messages: [], channel_ids: [] },
+      { user: "Bob", password: "Bob", messages: [], channel_ids: [] },
       // Add more users as needed
     ];
 

@@ -4,6 +4,8 @@ import "./index.css";
 export function Login() {
   const location = useLocation();
   const [user, setInput] = useState(location.state ? location.state : "");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="container-login">
@@ -14,7 +16,19 @@ export function Login() {
         value={user}
         placeholder="User name"
       />
-      {user.trim() && (
+      <input
+        type={showPassword ? "text" : "password"}
+        onChange={(e) => setPassword(e.currentTarget.value)}
+        value={password}
+        placeholder="Password"
+      />
+      <input
+        id="check"
+        type="checkbox"
+        value={showPassword}
+        onChange={() => setShowPassword((prev) => !prev)}
+      />
+      {user.trim() && password.trim() && (
         <Link
           className="button"
           to={{

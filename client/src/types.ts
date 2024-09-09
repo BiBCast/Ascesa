@@ -11,3 +11,11 @@ export type ChannelType = {
   id: string;
   title: string;
 };
+
+export type UserType = {
+  id?: string;
+  user: string;
+  password: string;
+  messages: string;
+  channel_ids: string;
+};

@@ -3,6 +3,7 @@ import { Schema, Types, model } from "mongoose";
 const User = new Schema({
   _id: { type: Types.ObjectId },
   user: String,
+  password: String,
   messages: [{ type: Types.ObjectId, ref: "Message" }],
   channel_ids: [{ type: Types.ObjectId, ref: "Channel" }],
 });

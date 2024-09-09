@@ -32,6 +32,7 @@ const UserType: GraphQLObjectType = new GraphQLObjectType({
   name: "userType",
   fields: () => ({
     id: { type: GraphQLID },
+    password: { type: GraphQLString },
     user: { type: GraphQLString },
     messages: { type: new GraphQLList(MessageType) },
     channel_ids: { type: new GraphQLList(ChannelType) },
