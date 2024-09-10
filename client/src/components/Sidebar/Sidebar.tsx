@@ -35,9 +35,9 @@ export function Sidebar({
       {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
       {data && <>{console.log("data collected")} </>}
-      <div>
-        User : {userPage}
-        <br />
+
+      <header className="user-info">
+        <span>User : {userPage}</span>
         <Link
           to={{
             pathname: "/",
@@ -46,7 +46,8 @@ export function Sidebar({
         >
           Login
         </Link>
-      </div>
+      </header>
+
       <div className="sidebar">
         {channels?.map(({ title, id }: ChannelType, index: number) => (
           //pass the entire channel ?

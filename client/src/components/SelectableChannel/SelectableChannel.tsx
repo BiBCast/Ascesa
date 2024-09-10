@@ -16,19 +16,18 @@ export function SelectableChannel({
     */
 
   return (
-    
     <a
-      className="selectable_channel"
+      className="channel-item"
       tabIndex={0}
       onClick={() => handleClickChannel(channelId)}
     >
-      <div className="image">Image</div>
+      <div className="channel-image">Image</div>
 
-      <div className="container">
-        <div className="title">
+      <div className="channel-content">
+        <div className="channel-title">
           <p>{title}</p>
         </div>
-        <div className="message">
+        <div className="last-message">
           <div>
             <LastMessage channelId={channelId} />
           </div>

@@ -32,7 +32,7 @@ export default function LastMessages({ channelId }: { channelId: string }) {
       {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
       {data && <>{console.log("data collected")} </>}
-      <div>{LastMessageUser}</div>
+      <div className="message-sender">{LastMessageUser}</div>
       <div>{LastMessage}</div>
     </>
   );

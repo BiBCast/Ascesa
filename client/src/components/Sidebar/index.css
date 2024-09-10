@@ -1,4 +1,19 @@
 .sidebar {
-  height: 100%;
-  min-width: 60%;
+  padding: 10px;
+}
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #4a4a4a;
+  color: #fff;
+  & > a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
 }
