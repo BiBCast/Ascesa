@@ -23,7 +23,7 @@ const AuthGuard = () => {
   if (loading) return <div>Loading...</div>;
 
   // Gestione degli errori
-  if (error) return <div>Error: </div>;
+  //if (error) return <div>Error: </div>;
 
   // Se il token è valido, mostra Outlet, altrimenti naviga al login
   const isAuthenticated = data?.User;
