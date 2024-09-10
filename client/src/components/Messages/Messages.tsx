@@ -19,7 +19,7 @@ export default function Messages({
 
   const bottomEl = useRef<null | HTMLDivElement>(null);
   const location = useLocation();
-  const userPage = location.state;
+  const userPage = location.state.user;
   const { loading, data, error } = useQuery(
     GET_MESSAGES_FOR_CHANNEL({ channelId: selectedChannelId }),
     {

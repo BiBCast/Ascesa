@@ -1,23 +1,23 @@
 .Inputbar {
   display: flex;
-  background-color: lightblue;
-  align-items: center;
-  justify-content: space-around;
-  position: sticky;
-  bottom: 0;
-  padding-block: 1%;
-  & > textarea {
-    font-size: calc(var(--text-size) - 0.3em);
-    font-size: var(--text-size);
-    width: 90%;
-    font-size: clamp(1rem, 2.5vw, 2rem);
+  padding: 10px;
+  background-color: #f0f0f0;
+  & textarea {
+    flex-grow: 1;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
     resize: none;
-    border-radius: 5px;
+    font-size: 16px;
   }
-  & > .send > img {
-    height: clamp(2em, 2.5vw, 3em);
+  & .send {
+    margin-left: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    & img {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
   }
 }
