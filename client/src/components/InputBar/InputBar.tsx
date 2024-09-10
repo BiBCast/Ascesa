@@ -24,7 +24,7 @@ export default function InputBar({
   const [receivedMsg, setReceivedMsg] = useState<MessageType>();
   const [input, setInput] = useState("");
   const location = useLocation();
-  const user: string = location.state;
+  const user: string = location.state.user;
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useAutosizeTextArea(textAreaRef.current, input);

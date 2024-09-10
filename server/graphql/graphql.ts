@@ -86,13 +86,16 @@ const RootQuery = new GraphQLObjectType({
     },
     User: {
       type: UserType,
-      args: { user: { type: GraphQLString }! },
+      args: {
+        user: { type: GraphQLString }!,
+        password: { type: GraphQLString }!,
+      },
       async resolve(parent, args) {
         //return a json {arg:value,...} and filter about the parameter of the json
-        const user = await schemaUser
-          .findOne({ user: args["user"] })
-          .populate("messages")
-          .populate("channel_ids");
+        const user = await schemaUser.findOne({
+          user: args["user"],
+          password: args["password"],
+        });
         return user;
       },
     },

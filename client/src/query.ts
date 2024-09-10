@@ -37,3 +37,21 @@ export const GET_CHANNEL = (channelId: string) => {
     }
   `;
 };
+
+export const GET_USERS = () => {
+  return gql`
+    query GetUsers {
+      Users (){
+        user
+      }
+    }
+  `;
+};
+
+export const GET_USER = gql`
+  query GetUser($user: String!, $password: String!) {
+    User(user: $user, password: $password) {
+      user
+    }
+  }
+`;

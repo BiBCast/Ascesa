@@ -34,7 +34,7 @@ export function Login() {
           to={{
             pathname: "/home",
           }}
-          state={user}
+          state={{ user: user, password: password }}
         >
           Go to chat
         </Link>

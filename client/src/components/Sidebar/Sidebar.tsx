@@ -15,7 +15,7 @@ export function Sidebar({
 }) {
   const [channels, setChannels] = useState<ChannelType[]>();
   const location = useLocation();
-  const userPage = location.state;
+  const userPage = location.state.user;
   //TODO type for data
   const { loading, data, error } = useQuery(GET_ALL_CHANNEL, {
     //TODO to optimize the fetching
