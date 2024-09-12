@@ -1,4 +1,13 @@
-.message-sender {
-  font-weight: bold;
-  margin-right: 5px;
+.last-message {
+  font-size: 14px;
+  color: #777;
+  & > .message-sender {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  & > .message-content p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }

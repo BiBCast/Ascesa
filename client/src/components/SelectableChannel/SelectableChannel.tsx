@@ -27,11 +27,8 @@ export function SelectableChannel({
         <div className="channel-title">
           <p>{title}</p>
         </div>
-        <div className="last-message">
-          <div>
-            <LastMessage channelId={channelId} />
-          </div>
-        </div>
+
+        <LastMessage channelId={channelId} />
       </div>
     </a>
   );

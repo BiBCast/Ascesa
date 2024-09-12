@@ -1,23 +1,3 @@
-/*.selectable_channel {
-  width: 100%;
-  border: none;
-
-  background-color: antiquewhite;
-  display: flex;
-  gap: 10%;
-  & > .container {
-    background-color: transparent;
-    flex-grow: 1;
-    & > p {
-      text-overflow: ellipsis;
-    }
-  }
-
-  &:focus {
-    background-color: bisque;
-  }
-}
-*/
 .channel-item {
   display: flex;
   align-items: center;
@@ -35,19 +15,18 @@
   & > .channel-image {
     width: 50px;
     height: 50px;
+    aspect-ratio: 1;
     background-color: #ddd;
     border-radius: 50%;
     margin-right: 15px;
   }
   & > .channel-content {
     flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
     & > .channel-title {
       font-size: 18px;
       margin-bottom: 5px;
     }
-  }
-  & .last-message {
-    font-size: 14px;
-    color: #777;
   }
 }

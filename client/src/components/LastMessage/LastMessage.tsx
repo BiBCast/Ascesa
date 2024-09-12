@@ -28,12 +28,16 @@ export default function LastMessages({ channelId }: { channelId: string }) {
   }, [JSON.stringify(data?.ChannelMessages)]);
   //TODO chach last message
   return (
-    <>
+    <div className="last-message">
       {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
       {data && <>{console.log("data collected")} </>}
-      <div className="message-sender">{LastMessageUser}</div>
-      <div>{LastMessage}</div>
-    </>
+      <div className="message-sender">
+        <p>{LastMessageUser}</p>
+      </div>
+      <div className="message-content">
+        <p>{LastMessage}</p>
+      </div>
+    </div>
   );
 }
