@@ -16,13 +16,10 @@ export default function LastMessages({ channelId }: { channelId: string }) {
   );
 
   useEffect(() => {
-    console.log(data?.ChannelMessages);
-
     if (data) {
       const message = data.ChannelMessages[0] as MessageType;
       setLastMessage(message.content);
       setLastMessageUser(message.user_id.user);
-      console.log(message);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data?.ChannelMessages)]);
@@ -31,7 +28,7 @@ export default function LastMessages({ channelId }: { channelId: string }) {
     <div className="last-message">
       {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
-      {data && <>{console.log("data collected")} </>}
+
       <div className="message-sender">
         <p>{LastMessageUser}</p>
       </div>

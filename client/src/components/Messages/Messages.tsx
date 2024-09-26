@@ -48,12 +48,11 @@ export default function Messages({
       {/* TODO  do loading screen*/}
       {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
-      {data && <>{console.log("data collected")} </>}
 
       <div className="container">
-        <section className="topBar">
+        <header className="topBar">
           <img src={Arrow} alt="fireSpot" onClick={handleSideBar} />
-        </section>
+        </header>
         {chatMessages?.map(
           ({ content, user_id }: MessageType, index: number) => (
             <div

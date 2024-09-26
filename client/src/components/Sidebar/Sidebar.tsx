@@ -34,7 +34,6 @@ export function Sidebar({
     <>
       {loading && <div>loading</div>}
       {error && <div>{error.message}</div>}
-      {data && <>{console.log("data collected")} </>}
 
       <header className="user-info">
         <span>User : {userPage}</span>
