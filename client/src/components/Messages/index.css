@@ -1,7 +1,6 @@
 .container {
   flex-grow: 1;
   overflow-y: auto;
-  overflow: scroll;
   padding: 20px;
   position: relative;
   scroll-behavior: smooth;
