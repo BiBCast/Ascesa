@@ -9,9 +9,11 @@ import { Link, useLocation } from "react-router-dom";
 export function Sidebar({
   setSelectedChannelId,
   handleClickChannel,
+  UserId
 }: {
   setSelectedChannelId: Dispatch<string>;
   handleClickChannel: (channelId: string | undefined) => void;
+  UserId: string;
 }) {
   const [channels, setChannels] = useState<ChannelType[]>();
   const location = useLocation();
@@ -19,6 +21,7 @@ export function Sidebar({
   //TODO type for data
   const { loading, data, error } = useQuery(GET_ALL_CHANNEL, {
     //TODO to optimize the fetching
+    variables: { user: UserId },
     fetchPolicy: "no-cache",
   });
   useEffect(() => {
@@ -36,6 +39,7 @@ export function Sidebar({
       {error && <div>{error.message}</div>}
 
       <header className="user-info">
+        <a>Create</a>
         <span>User : {userPage}</span>
         <Link
           to={{

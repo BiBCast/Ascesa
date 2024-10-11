@@ -27,7 +27,10 @@ const AuthGuard = () => {
 
   // Se il token è valido, mostra Outlet, altrimenti naviga al login
   const isAuthenticated = data?.User;
-  return isAuthenticated ? <Home /> : <Navigate to="/" />;
+  let UserId = data?.User.id;
+  console.log(UserId);
+  
+  return isAuthenticated ? <Home UserId={UserId}/> : <Navigate to="/" />;
 };
 
 export default AuthGuard;

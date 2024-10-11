@@ -3,7 +3,7 @@ import { Chat } from "../../Chat/Chat";
 import { Sidebar } from "../../Sidebar/Sidebar";
 import { useState } from "react";
 
-export function Home() {
+export function Home({UserId}:{UserId:string}) {
   const [selectedChannelId, setSelectedChannelId] = useState<string>();
   const [isOpenSideBar, setIsOpenSideBar] = useState<boolean>(true);
 
@@ -24,6 +24,7 @@ export function Home() {
       <div className="Channels">
         {isOpenSideBar && (
           <Sidebar
+            UserId={UserId}
             setSelectedChannelId={setSelectedChannelId}
             handleClickChannel={handleClickChannel}
           />

@@ -20,8 +20,8 @@ export const GET_MESSAGES_FOR_CHANNEL = ({
 };
 
 export const GET_ALL_CHANNEL = gql`
-  query GetChannels {
-    Channels {
+  query GetChannels($user: ID!) {
+    Channels(user: $user ) {
       title
       id
     }
@@ -51,7 +51,8 @@ export const GET_USERS = () => {
 export const GET_USER = gql`
   query GetUser($user: String!, $password: String!) {
     User(user: $user, password: $password) {
-      user
+      user,
+      id
     }
   }
 `;

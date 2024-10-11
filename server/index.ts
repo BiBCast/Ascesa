@@ -59,6 +59,7 @@ app.get("/createMockData", async (req, res) => {
     const usersData: UserType[] = [
       { user: "Alice", password: "Alice", messages: [], channel_ids: [] },
       { user: "Bob", password: "Bob", messages: [], channel_ids: [] },
+      { user: "Mario", password: "Mario", messages: [], channel_ids: [] }
       // Add more users as needed
     ];
 

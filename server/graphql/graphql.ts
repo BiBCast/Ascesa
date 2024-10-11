@@ -7,6 +7,7 @@ import {
   GraphQLBoolean,
 } from "graphql";
 import { schemaChannel, schemaMessage, schemaUser } from "../schemas/schemas";
+import mongoose from "mongoose";
 // Construct a schema, using GraphQL schema language
 //get all, get by id,
 // schema
@@ -129,13 +130,21 @@ const RootQuery = new GraphQLObjectType({
 
     Channels: {
       type: new GraphQLList(ChannelType),
-      args: {},
-      async resolve() {
-        //return a json {arg:value,...} and filter about the parameter of the json
-        const channels = await schemaChannel.find({});
+      args: {
+        user: { type: GraphQLID } // Define an argument for filtering
+      },
+      async resolve(parent, args) {
+        // Use args.user to filter the channels
+        const userId = new mongoose.Types.ObjectId(args["user"]);
+        const channels = await schemaChannel.find({ users: { $in: [userId] } });
+
+        console.log("channels");
+        console.log(args["user"]);
+        console.log(channels);
+        
         return channels;
       },
-    },
+    },    
     Channel: {
       type: ChannelType,
       args: { id: { type: GraphQLString }! },
