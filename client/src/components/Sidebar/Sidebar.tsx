@@ -9,7 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 export function Sidebar({
   setSelectedChannelId,
   handleClickChannel,
-  UserId
+  UserId,
 }: {
   setSelectedChannelId: Dispatch<string>;
   handleClickChannel: (channelId: string | undefined) => void;
@@ -17,7 +17,9 @@ export function Sidebar({
 }) {
   const [channels, setChannels] = useState<ChannelType[]>();
   const location = useLocation();
-  const userPage = location.state.user;
+  const user = location.state?.user;
+  const password = location.state?.password;
+  //{ user: user, password: password }
   //TODO type for data
   const { loading, data, error } = useQuery(GET_ALL_CHANNEL, {
     //TODO to optimize the fetching
@@ -39,13 +41,20 @@ export function Sidebar({
       {error && <div>{error.message}</div>}
 
       <header className="user-info">
-        <a>Create</a>
-        <span>User : {userPage}</span>
+        <Link
+          to={{
+            pathname: "/createChannel",
+          }}
+          state={{ user: user, password: password }}
+        >
+          Create
+        </Link>
+        <span>User : {user}</span>
         <Link
           to={{
             pathname: "/",
           }}
-          state={userPage}
+          state={{ user: user, password: password }}
         >
           Login
         </Link>
