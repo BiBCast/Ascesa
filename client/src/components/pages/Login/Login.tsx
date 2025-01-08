@@ -1,5 +1,5 @@
-import { KeyboardEventHandler, useState } from "react";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import Input from "../../Input/Input";
 export function Login() {
